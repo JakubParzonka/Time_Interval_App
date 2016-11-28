@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             D2xxManager manager = D2xxManager.getInstance(getApplicationContext());
           // System.out.println("Library version: " + D2xxManager.getLibraryVersion());
+            
             textView.setText(String.valueOf(D2xxManager.getLibraryVersion()));
         } catch (D2xxManager.D2xxException e) {
             e.printStackTrace();
