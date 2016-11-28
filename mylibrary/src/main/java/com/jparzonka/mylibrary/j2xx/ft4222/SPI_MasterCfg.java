@@ -1,0 +1,10 @@
+package com.jparzonka.mylibrary.j2xx.ft4222;
+
+/* compiled from: FT_4222_Device */
+class SPI_MasterCfg {
+    int clock;
+    int cpha;
+    int cpol;
+    int ioLine;
+    byte ssoMap;
+}
