@@ -13,5 +13,37 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_marginBottom="20dp"
+        android:text="First" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Second" />
+
+    <TextView
+        android:id="@+id/device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginBottom="20dp"
+        android:text="Second" />
+
+    <TextView
+        android:id="@+id/vendor_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/device_name"
+        android:layout_marginBottom="20dp"
+        android:text="Second" />
+
+    <TextView
+        android:id="@+id/product_itd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vendor_id"
+        android:layout_marginBottom="20dp"
+        android:text="Second" />
 </RelativeLayout>
