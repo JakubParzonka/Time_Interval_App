@@ -46,4 +46,12 @@
         android:layout_below="@+id/vendor_id"
         android:layout_marginBottom="20dp"
         android:text="Second" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start thread"
+        android:onClick="startThread"
+        android:layout_below="@id/product_itd"/>
 </RelativeLayout>
