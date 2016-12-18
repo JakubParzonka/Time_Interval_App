@@ -4,41 +4,45 @@ import android.content.Context;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class InfoPanel extends AppCompatActivity {
+public class InfoPanelFragment extends Fragment {
 
     private TextView textView1, textView2, textView3, textView4, textView5, deviceNameTextView, vendroIdTextView, productIdTextView, libraryVersiontextView, isOpentextView;
-    UsbDevice device = null;
+    private UsbDevice device = null;
+    protected View view;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info_panel);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_info_panel, container, false);
+        textView1 = (TextView) view.findViewById(R.id.textView1);
+        deviceNameTextView = (TextView) view.findViewById(R.id.textView21);
 
-        textView1 = (TextView) findViewById(R.id.textView1);
-        deviceNameTextView = (TextView) findViewById(R.id.textView21);
+        textView2 = (TextView) view.findViewById(R.id.textView2);
+        vendroIdTextView = (TextView) view.findViewById(R.id.textView22);
 
-        textView2 = (TextView) findViewById(R.id.textView2);
-        vendroIdTextView = (TextView) findViewById(R.id.textView22);
+        textView3 = (TextView) view.findViewById(R.id.textView3);
+        productIdTextView = (TextView) view.findViewById(R.id.textView23);
 
-        textView3 = (TextView) findViewById(R.id.textView3);
-        productIdTextView = (TextView) findViewById(R.id.textView23);
+        textView4 = (TextView) view.findViewById(R.id.textView4);
+        libraryVersiontextView = (TextView) view.findViewById(R.id.textView24);
 
-        textView4 = (TextView) findViewById(R.id.textView4);
-        libraryVersiontextView = (TextView) findViewById(R.id.textView24);
+        textView5 = (TextView) view.findViewById(R.id.textView5);
+        isOpentextView = (TextView) view.findViewById(R.id.textView25);
 
-        textView5 = (TextView) findViewById(R.id.textView5);
-        isOpentextView = (TextView) findViewById(R.id.textView25);
-
-        UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        UsbManager usbManager = (UsbManager) view.getContext().getSystemService(Context.USB_SERVICE);
         UsbFactory factory = new UsbFactory(usbManager);
 
         textView5.setText("Size: " + UsbFactory.getDeviceListSize());
 
         try {
-             device = factory.getUsbDevice();
+            device = factory.getUsbDevice();
         } catch (NullPointerException npe) {
             Log.e("ERROR", "Device is not connected!", npe);
         }
@@ -66,12 +70,20 @@ public class InfoPanel extends AppCompatActivity {
             productIdTextView.setText("PId got crashed");
             Log.e("ERROR", "Product ID ID is NULL", npe);
         }
-
-
+        return view;
     }
 
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
 }
+
+
+
 //            deviceNameTextView.setText(factory.getUsbDevice().getDeviceName());
 //            vendroIdTextView.setText(factory.getUsbDevice().getVendorId());
 //            productIdTextView.setText(factory.getUsbDevice().getProductId());
