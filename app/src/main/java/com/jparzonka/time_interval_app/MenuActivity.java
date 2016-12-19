@@ -1,6 +1,6 @@
 package com.jparzonka.time_interval_app;
 
-import android.app.FragmentManager;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,18 +11,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jparzonka.mylibrary.j2xx.D2xxManager;
 
 public class MenuActivity extends AppCompatActivity {
-
     public static D2xxManager ftD2xx = null;
     public static int currect_index = 0;
     public static int old_index = -1;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-
+    private static Fragment currentFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +29,11 @@ public class MenuActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
-        fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-
-//        FragmentMain fragmentMain = new FragmentMain();
-//        fragmentTransaction.replace(android.R.id.content, fragmentMain).commit();
-
-
+        InfoPanelFragment.setParameters(getApplicationContext(), ftD2xx);
         IntentFilter filter = new IntentFilter();
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         filter.setPriority(500);
-
         this.registerReceiver(mUsbReceiver, filter);
 
     }
@@ -56,54 +44,37 @@ public class MenuActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void infoDeviceTextViewOnClick(View view) {
+        Fragment fragment = new InfoPanelFragment();
+        //fragment.setArguments(getIntent().getExtras());
 
-    private void chooseActivity(String activity) {
-        fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        if (activity == "info") {
-            InfoPanelFragment infoPanelFragment = new InfoPanelFragment();
-            fragmentTransaction.replace(android.R.id.content, infoPanelFragment).commit();
-            Toast.makeText(this, "Info panel", Toast.LENGTH_SHORT).show();
-        }
-        if (activity == "lorem1") {
-            Lorem_Ipsum_1 lorem_ipsum_1 = new Lorem_Ipsum_1();
-            fragmentTransaction.replace(android.R.id.content, lorem_ipsum_1).commit();
-            Toast.makeText(this, "lorem_ipsum_1", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "No more features. SORRY BRO", Toast.LENGTH_SHORT).show();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id., fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
 
-        }
+//        Intent intent = new Intent(this, InfoPanel.class);
+//        startActivity(intent);
 
     }
+
+    public void send_data_TextViewOnClick(View view) {
+        Intent intent = new Intent(this, SendDataActivity.class);
+        startActivity(intent);
+
+    }
+
 
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String TAG = "FragL";
             String action = intent.getAction();
-            Log.i(TAG, action);
-//            if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
-//                Log.i(TAG, "DETACHED...");
-//
-//                if (currentFragment != null) {
-//                    switch (currect_index) {
-//                        case 5:
-//                            ((DeviceUARTFragment) currentFragment).notifyUSBDeviceDetach();
-//                            break;
-//                        default:
-//                            //((DeviceInformationFragment)currentFragment).onStart();
-//                            break;
-//                    }
-//                }
-//            }
+            if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
+                Log.i(TAG, "DETACHED...");
+            }
         }
     };
 
-    public void infoDeviceTextViewOnClick(View view) {
-        chooseActivity("info");
-    }
 
-    public void lorem_ipsum_1_TextViewOnClick(View view) {
-        chooseActivity("lorem1");
-    }
 }

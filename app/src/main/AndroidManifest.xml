@@ -3,6 +3,7 @@
     package="com.jparzonka.time_interval_app">
 
     <uses-feature android:name="android.hardware.usb.host" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +23,13 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".InfoPanel"
+            android:parentActivityName=".MenuActivity" />
+        <activity
+            android:name=".SendDataActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+        <activity android:name=".InfoPanelFragment" />
     </application>
 
 </manifest>

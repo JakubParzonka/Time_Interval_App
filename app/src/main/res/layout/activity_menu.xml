@@ -11,29 +11,33 @@
     tools:context="com.jparzonka.time_interval_app.MenuActivity">
 
 
+    <TextView
+        android:id="@+id/info_device_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:textSize="30sp"
+        android:onClick="infoDeviceTextViewOnClick"
+        android:text="DEVICE INFO" />
 
+    <TextView
+        android:id="@+id/send_data_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/info_device_textview"
+        android:textSize="30sp"
+        android:layout_marginBottom="50dp"
+        android:onClick="send_data_TextViewOnClick"
+        android:text="SEND DATA" />
 
-        <TextView
-            android:id="@+id/info_device_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="DEVICE INFO"
-            android:onClick="infoDeviceTextViewOnClick"/>
-
-        <TextView
-            android:id="@+id/LOREM_IPSUM_1_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="LOREM_IPSUM_1"
-            android:onClick="lorem_ipsum_1_TextViewOnClick"
-            android:layout_below="@+id/info_device_textview"/>
-
-        <TextView
-            android:id="@+id/LOREM_IPSUM_2_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="LOREM_IPSUM_2"
-            android:layout_below="@+id/LOREM_IPSUM_1_textview" />
+    <TextView
+        android:id="@+id/LOREM_IPSUM_2_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/send_data_textview"
+        android:textSize="30sp"
+        android:layout_marginBottom="50dp"
+        android:text="LOREM_IPSUM_2" />
 
 
 </RelativeLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_user_panel"
+    android:id="@+id/activity_info_panel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,101 +9,64 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/device_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Device name:"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginBottom="20dp"
-        android:text="Vendro ID:"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_marginBottom="20dp"
-        android:text="Product ID"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
         android:layout_marginBottom="20dp"
         android:text="We are the robots!"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/description_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:layout_marginBottom="20dp"
-        android:text="We are the robots!"
-        android:textSize="20sp" />
-
-    <!---->
-
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="50dp"
-        android:text="We are the robots!"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView21"
-        android:layout_marginBottom="20dp"
-
-        android:text="We are the robots!"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/textView23"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView22"
+        android:layout_below="@+id/device_name"
         android:layout_marginBottom="20dp"
         android:text="We are the robots!"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/product_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView23"
+        android:layout_below="@+id/description_number"
         android:layout_marginBottom="20dp"
         android:text="We are the robots!"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/serial_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView24"
+        android:layout_below="@+id/product_id"
         android:layout_marginBottom="20dp"
         android:text="We are the robots!"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/device_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/serial_number"
+        android:layout_marginBottom="20dp"
+        android:text="We are the robots!"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/error_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/device_number"
+        android:layout_marginBottom="20dp"
+        android:text="Here shouldn't be an error"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onRefreshButtonClick"
+        android:text="Refresh" />
 
 
 </RelativeLayout>
