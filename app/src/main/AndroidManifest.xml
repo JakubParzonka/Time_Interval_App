@@ -23,13 +23,7 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
-        <activity
-            android:name=".InfoPanel"
-            android:parentActivityName=".MenuActivity" />
-        <activity
-            android:name=".SendDataActivity"
-            android:parentActivityName=".MenuActivity"></activity>
-        <activity android:name=".InfoPanelFragment" />
+
     </application>
 
 </manifest>

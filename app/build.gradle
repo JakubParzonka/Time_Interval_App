@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    final HOCKEYAPP_APP_ID= "\"7c5622ee0cbe44f9a7f5a239ed49a9c7\"";
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
     defaultConfig {
@@ -10,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "HOCKEYAPP_APP_ID", HOCKEYAPP_APP_ID
     }
     buildTypes {
         release {
@@ -27,5 +29,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'net.hockeyapp.android:HockeySDK:4.1.1'
     testCompile 'junit:junit:4.12'
+
 }

@@ -383,10 +383,10 @@ public class D2xxManager {
         return rc;
     }
 
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+ /*   // JADX WARNING: inconsistent code.
+      // Code decompiled incorrectly, please refer to instructions dump.
     public synchronized int getDeviceInfoList(int r3, com.jparzonka.mylibrary.j2xx.D2xxManager.FtDeviceInfoListNode[] r4) {
-        /*
+
         r2 = this;
         monitor-enter(r2);
         r0 = 0;
@@ -409,17 +409,22 @@ public class D2xxManager {
         r1 = move-exception;
         monitor-exit(r2);
         throw r1;
-        */
+
         throw new UnsupportedOperationException("Method not decompiled: com.ftdi.j2xx.D2xxManager.getDeviceInfoList(int, com.ftdi.j2xx.D2xxManager$FtDeviceInfoListNode[]):int");
     }
+  */
 
-    public synchronized FtDeviceInfoListNode getDeviceInfoListDetail(int index) {
+    public synchronized FtDeviceInfoListNode getDeviceInfoListDetail(int index) throws IndexOutOfBoundsException {
+//        if (!mFtdiDevices.equals(null))
+//            throw new NullPointerException("\nmFtdiDevices.size() -> " + mFtdiDevices.size()
+//                    + "\nthis.mFtdiDevices.size() - > " + mFtdiDevices.size() + "\nindex -> " + index);
+        if (mFtdiDevices.equals(null)) throw new NullPointerException("mFtdiDevices is null!");
+        int x = 0;
+        if (index == 1) x = 1;
         FtDeviceInfoListNode ftDeviceInfoListNode;
-        if (index > this.mFtdiDevices.size() || index < 0) {
-            ftDeviceInfoListNode = null;
-        } else {
-            ftDeviceInfoListNode = ((FT_Device) this.mFtdiDevices.get(index)).mDeviceInfoNode;
-        }
+        if (index > this.mFtdiDevices.size() || index < 0) ftDeviceInfoListNode = null;
+        else ftDeviceInfoListNode = this.mFtdiDevices.get(index - x).mDeviceInfoNode;
+
         return ftDeviceInfoListNode;
     }
 

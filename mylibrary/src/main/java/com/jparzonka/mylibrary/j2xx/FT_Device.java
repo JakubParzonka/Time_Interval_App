@@ -74,7 +74,19 @@ public class FT_Device {
             bcdDevice.put(rawDescriptors[13]);
             this.mDeviceInfoNode.bcdDevice = bcdDevice.getShort(0);
             this.mDeviceInfoNode.iSerialNumber = rawDescriptors[16];
-            this.mDeviceInfoNode.serialNumber = getConnection().getSerial();
+
+            try {
+                this.mDeviceInfoNode.serialNumber = getConnection().getSerial();
+            } catch (NullPointerException npe) {
+                System.out.println("\nserialNumber in FT_Device is null. \n Message: " + npe.getMessage());
+            }
+            UsbDeviceConnection udc;
+            if ((udc = getConnection()) == null)
+                throw new NullPointerException("UsbDeviceConnection  is null");
+            if (udc.getSerial() == null)
+                throw new NullPointerException("udc.getSerial() is null");
+
+
             this.mDeviceInfoNode.id = (this.mUsbDevice.getVendorId() << 16) | this.mUsbDevice.getProductId();
             this.mDeviceInfoNode.breakOnParam = 8;
             getConnection().controlTransfer(-128, 6, rawDescriptors[15] | 768, 0, buffer, FT_4222_Defines.CHIPTOP_DEBUG_REQUEST, 0);
