@@ -9,9 +9,72 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:id="@+id/operation_mode_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="We will send some data here" />
+        android:text="@string/operation_mode" />
+
+    <RadioGroup
+        android:id="@+id/operation_mode_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/operation_mode_title"
+        android:checkedButton="@+id/checked_radio_button_id"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/ti_mode_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ti" />
+
+        <RadioButton
+            android:id="@+id/frequency_mode_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/frequency" />
+    </RadioGroup>
 
 
+    <TextView
+        android:id="@+id/time_interval_picker_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/operation_mode_radio_group"
+        android:text="@string/time_interval" />
+
+    <LinearLayout
+        android:id="@+id/time_interval_picker_linear_layout"
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <NumberPicker
+            android:id="@+id/s_number_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <NumberPicker
+            android:id="@+id/m_s_number_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp" />
+
+        <NumberPicker
+            android:id="@+id/micro_s_number_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <NumberPicker
+            android:id="@+id/n_s_number_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <NumberPicker
+            android:id="@+id/p_s_number_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
 </RelativeLayout>
