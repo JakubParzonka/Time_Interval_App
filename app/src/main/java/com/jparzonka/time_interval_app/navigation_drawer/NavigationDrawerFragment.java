@@ -56,11 +56,14 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-
+    private static ActionBar actionBar;
     public NavigationDrawerFragment() {
 
     }
 
+    public static void setActionBar(ActionBar ab){
+        actionBar = ab;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +100,8 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
+        mDrawerListView.setAdapter(new ArrayAdapter<>(
+                getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
@@ -129,7 +132,7 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
 
-        ActionBar actionBar = getActionBar();
+
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 

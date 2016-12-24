@@ -61,7 +61,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         try {
             InfoPanelFragment.setParameters(getApplicationContext(), ftD2xx);
         } catch (Exception e) {
-            LogHandler.handleLog(getApplicationContext(), e.getMessage(),11);
+            LogHandler.handleLog(getApplicationContext(), e.getMessage(), 11);
         }
 
         IntentFilter filter = new IntentFilter();
@@ -69,6 +69,8 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         filter.setPriority(500);
         this.registerReceiver(mUsbReceiver, filter);
+
+        NavigationDrawerFragment.setActionBar(getSupportActionBar());
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -137,6 +139,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
+        // TODO Czy nie należy przekazywać do konstruktorów contextu oraz D2XXManagera?
         if (position == 0) {
             IntroduceFragment introduceFragment = new IntroduceFragment();
             fragmentTransaction.replace(android.R.id.content, introduceFragment).commit();
