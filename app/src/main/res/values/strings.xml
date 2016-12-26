@@ -14,4 +14,9 @@
     <string name="search">Search</string>
     <string name="about">O programie</string>
     <string name="title_section4">ERROR 404</string>
+    <string name="ti">TI</string>
+    <string name="frequency">FREQUENCY</string>
+    <string name="period">Period</string>
+    <string name="frequency2">Frequency</string>
+    <string name="start">Start</string>
 </resources>

@@ -8,10 +8,59 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <TextView
+
+    <RelativeLayout
+        android:id="@+id/mode_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="We will send some data here" />
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/mode_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/ti_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ti" />
+
+            <RadioButton
+                android:id="@+id/frequency_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/frequency" />
+
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/external_clock_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/mode_radio_group"
+            android:text="External Clock" />
 
 
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/operation_mode_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mode_layout"
+        android:layout_gravity="bottom" />
+
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:padding="20dp"
+        android:text="@string/start" />
 </RelativeLayout>

@@ -61,7 +61,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         try {
             InfoPanelFragment.setParameters(getApplicationContext(), ftD2xx);
         } catch (Exception e) {
-            LogHandler.handleLog(getApplicationContext(), e.getMessage(),11);
+            LogHandler.handleLog(getApplicationContext(), e.getMessage(), 11);
         }
 
         IntentFilter filter = new IntentFilter();
