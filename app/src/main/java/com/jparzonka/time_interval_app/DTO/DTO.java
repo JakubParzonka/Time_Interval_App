@@ -29,7 +29,7 @@ public class DTO {
     private int hzTrigger;
     private int mhzTrigger;
 
-    public DTO() {
+    public DTO() throws NullPointerException{
         SendDataFragment sdf = new SendDataFragment();
         setSelectedMode(sdf.getSelectedMode());
         setExternalClockSelected(sdf.isExternalClockSelected());

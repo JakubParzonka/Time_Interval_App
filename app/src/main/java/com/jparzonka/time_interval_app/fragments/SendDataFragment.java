@@ -65,9 +65,15 @@ public class SendDataFragment extends Fragment {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(view.getContext(), "Transmission started", Toast.LENGTH_SHORT).show();
-                DTO dto = new DTO();
-                System.out.println(dto.toString());
+
+                try {
+                    DTO dto = new DTO();
+                    System.out.println(dto.toString());
+                } catch (NullPointerException e) {
+                    System.err.println(e.getMessage());
+                    Toast.makeText(view.getContext(), "Transmission failed!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
