@@ -36,17 +36,15 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
-
+    private static SendDataFragment sendDataFragment;
     public static D2xxManager ftD2xx = null;
     public static int currect_index = 0;
     public static int old_index = -1;
-
     private static Fragment currentFragment = null;
     private CharSequence mTitle;
 
     public MenuActivity() {
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +146,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
                 LogHandler.handleLog(getApplicationContext(), e.getMessage(), 12);
             }
         } else if (position == 2) {
-            SendDataFragment sendDataFragment = new SendDataFragment();
+            sendDataFragment = new SendDataFragment();
             fragmentTransaction.replace(android.R.id.content, sendDataFragment).commit();
         } else if (position == 3) {
             Toast.makeText(this, "NOT READY YET", Toast.LENGTH_SHORT).show();
@@ -220,4 +218,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         }
     }
 
+    public static SendDataFragment getSendDataFragment() {
+        return sendDataFragment;
+    }
 }

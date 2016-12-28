@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,11 @@ public class TimeIntervalModeFragment extends Fragment {
 
     private View view;
     private EditText sTIEditText, msTIEditText, microsTIEditText, nsTIEditText, psTIEditText;
-    private int outputWidth = 0;
-    private boolean isPeriodTriggerSectionSelected;
+    private static double outputWidth = 0;
+    private static FrequencyTriggerSectionFragment frequencyTriggerSectionFragment;
+    private static PeriodTriggerSectionFragment periodTriggerSectionFragment;
+
+    private static boolean isPeriodTriggerSectionSelected;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class TimeIntervalModeFragment extends Fragment {
                 else if (checkedId == R.id.hundred_radio_button) setOutputWidth(100);
                 else
                     Toast.makeText(view.getContext(), "Non of output widths has been selected!", Toast.LENGTH_SHORT).show();
-
+                Log.i("TIMF/checkedId", String.valueOf(checkedId));
             }
         });
 
@@ -58,14 +62,17 @@ public class TimeIntervalModeFragment extends Fragment {
                 // find which radio button is selected
                 if (checkedId == R.id.period_trigger_section_radio_button) {
                     setPeriodTriggerSectionSelected(true);
-                    PeriodTriggerSectionFragment periodTriggerSectionFragment = new PeriodTriggerSectionFragment();
+                    periodTriggerSectionFragment = new PeriodTriggerSectionFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.replace(R.id.trigger_section_frame_layout, periodTriggerSectionFragment).commit();
+                    Log.i("TIMF", "fragment replaced on PeriodTriggerSectionFragment");
+
                 } else if (checkedId == R.id.frequency_trigger_section_radio_button) {
                     setPeriodTriggerSectionSelected(false);
-                    FrequencyTriggerSectionFragment frequencyTriggerSectionFragment = new FrequencyTriggerSectionFragment();
+                    frequencyTriggerSectionFragment = new FrequencyTriggerSectionFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.replace(R.id.trigger_section_frame_layout, frequencyTriggerSectionFragment).commit();
+                    Log.i("TIMF", "fragment replaced on FrequencyTriggerSectionFragment");
                 }
             }
         });
@@ -73,39 +80,58 @@ public class TimeIntervalModeFragment extends Fragment {
     }
 
 
-    public int getOutputWidth() {
+    public static double getOutputWidth() {
         return outputWidth;
     }
 
-    private void setOutputWidth(int outputWidth) {
+    private void setOutputWidth(double outputWidth) {
         this.outputWidth = outputWidth;
     }
 
-    public int getsTI() {
-        return Integer.parseInt(String.valueOf(sTIEditText.getText()));
+    public double getsTI() {
+        double sTI = (Integer.parseInt(sTIEditText.getText().toString()));
+        Log.i("TIMF", "getsTI: " + sTI);
+        return sTI;
     }
 
-    public int getMsTI() {
-        return Integer.parseInt(String.valueOf(msTIEditText.getText()));
+    public double getMsTI() {
+        double msTI = (Integer.parseInt(msTIEditText.getText().toString()));
+        Log.i("TIMF", "getmsTI: " + msTI);
+        return msTI;
     }
 
-    public int getMicrosTI() {
-        return Integer.parseInt(String.valueOf(microsTIEditText.getText()));
+    public double getMicrosTI() {
+        double microsTI = (Integer.parseInt(microsTIEditText.getText().toString()));
+        Log.i("TIMF", "getmicrosTI: " + microsTI);
+        return microsTI;
     }
 
-    public int getNsTI() {
-        return Integer.parseInt(String.valueOf(nsTIEditText.getText()));
+    public double getNsTI() {
+        double nsTI = (Integer.parseInt(nsTIEditText.getText().toString()));
+        Log.i("TIMF", "getnsTI: " + nsTI);
+        return nsTI;
     }
 
-    public int getPsTI() {
-        return Integer.parseInt(String.valueOf(psTIEditText.getText()));
+    public double getPsTI() {
+        double psTI = (Integer.parseInt(psTIEditText.getText().toString()));
+        Log.i("TIMF", "getpsTI: " + psTI);
+        return psTI;
     }
 
     public void setPeriodTriggerSectionSelected(boolean periodTriggerSectionSelected) {
         isPeriodTriggerSectionSelected = periodTriggerSectionSelected;
     }
 
-    public boolean isPeriodTriggerSectionSelected() {
+    public static boolean getPeriodTriggerSectionSelected() {
         return isPeriodTriggerSectionSelected;
     }
+
+    public static FrequencyTriggerSectionFragment getFrequencyTriggerSectionFragment() {
+        return frequencyTriggerSectionFragment;
+    }
+
+    public static PeriodTriggerSectionFragment getPeriodTriggerSectionFragment() {
+        return periodTriggerSectionFragment;
+    }
+
 }

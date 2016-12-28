@@ -2,11 +2,14 @@ package com.jparzonka.time_interval_app.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
+import com.jparzonka.time_interval_app.DTO.DTO;
 import com.jparzonka.time_interval_app.R;
 
 /**
@@ -25,18 +28,35 @@ public class PeriodTriggerSectionFragment extends Fragment {
         sPTS = (EditText) view.findViewById(R.id.seconds_trigger_section);
         msPTS = (EditText) view.findViewById(R.id.miliseconds_trigger_section);
         microsPTS = (EditText) view.findViewById(R.id.microseconds_trigger_section);
+
+
+        Button startButton = (Button) view.findViewById(R.id.period_start_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DTO dto = new DTO();
+                System.out.println(dto.toString());
+            }
+        });
+
         return view;
     }
 
-    public int getSecondPTS() {
-        return Integer.parseInt(String.valueOf(sPTS.getText()));
+    public double getSecondPTS() {
+        double sPT = (Integer.parseInt(sPTS.getText().toString()));
+        Log.i("PTSF", "getSecondPTS: " + sPT);
+        return sPT;
     }
 
-    public int getMilisecondPTS() {
-        return Integer.parseInt(String.valueOf(msPTS.getText()));
+    public double getMilisecondPTS() {
+        double msPT = (Integer.parseInt(msPTS.getText().toString()));
+        Log.i("PTSF", "getMilisecondPTS: " + msPT);
+        return msPT;
     }
 
-    public int getMicrosecondsPTS() {
-        return Integer.parseInt(String.valueOf(microsPTS.getText()));
+    public double getMicrosecondsPTS() {
+        double microsPT = (Integer.parseInt(microsPTS.getText().toString()));
+        Log.i("PTSF", "getMicrosecondsPTS: " + microsPT);
+        return microsPT;
     }
 }

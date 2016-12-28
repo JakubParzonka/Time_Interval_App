@@ -6,15 +6,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
-import com.jparzonka.time_interval_app.DTO.DTO;
 import com.jparzonka.time_interval_app.R;
 
 /**
@@ -23,10 +21,13 @@ import com.jparzonka.time_interval_app.R;
 public class SendDataFragment extends Fragment {
 
     private View view;
-    private boolean isExternalClockSelected = false;
+    private static boolean isExternalClockSelected = false;
     private CheckBox externalClockCheckbox;
     // TODO wartość selectedMode'a zrobić jako ENUM!!
     private String selectedMode = "";
+
+    private static TimeIntervalModeFragment timeIntervalModeFragment;
+    private static FrequencyModeFragment frequencyModeFragment;
 
     @Nullable
     @Override
@@ -36,7 +37,12 @@ public class SendDataFragment extends Fragment {
         externalClockCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setExternalClockSelected(true);
+                if (externalClockCheckbox.isChecked()) {
+                    setExternalClockSelected(true);
+                    Log.i("SendDataFragment", "setExternalClockSelected is true");
+                } else if (!externalClockCheckbox.isChecked()) {
+                    setExternalClockSelected(false);
+                }
             }
         });
 
@@ -49,38 +55,33 @@ public class SendDataFragment extends Fragment {
                 // find which radio button is selected
                 if (checkedId == R.id.ti_radio_button) {
                     setSelectedMode("TI");
-                    TimeIntervalModeFragment timeIntervalModeFragment = new TimeIntervalModeFragment();
+                    timeIntervalModeFragment = new TimeIntervalModeFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.replace(R.id.operation_mode_fragment, timeIntervalModeFragment).commit();
+                    Log.i("SendDataFragment", "fragment replaced on TimeIntervalModeFragment");
                 } else if (checkedId == R.id.frequency_radio_button) {
                     setSelectedMode("F");
-                    FrequencyModeFragment frequencyModeFragment = new FrequencyModeFragment();
+                    frequencyModeFragment = new FrequencyModeFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.replace(R.id.operation_mode_fragment, frequencyModeFragment).commit();
+                    Log.i("SendDataFragment", "fragment replaced on FrequencyModeFragment");
                 }
             }
         });
 
-        Button startButton = (Button) view.findViewById(R.id.start_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                try {
-                    DTO dto = new DTO();
-                    System.out.println(dto.toString());
-                } catch (NullPointerException e) {
-                    System.err.println(e.getMessage());
-                    Toast.makeText(view.getContext(), "Transmission failed!", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
 
         return view;
     }
 
-    public boolean isExternalClockSelected() {
+    public static TimeIntervalModeFragment getTimeIntervalModeFragment() {
+        return timeIntervalModeFragment;
+    }
+
+    public static FrequencyModeFragment getFrequencyModeFragment() {
+        return frequencyModeFragment;
+    }
+
+    public static boolean getExternalClockSelected() {
         return isExternalClockSelected;
     }
 

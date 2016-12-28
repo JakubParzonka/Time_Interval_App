@@ -22,9 +22,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:inputType="number"
                 android:scaleX="1.2"
                 android:scaleY="1.2"
-                android:text="0" />
+                android:text="10" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,9 +47,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:inputType="number"
                 android:scaleX="1.2"
                 android:scaleY="1.2"
-                android:text="0" />
+                android:text="20" />
 
 
             <TextView
@@ -71,9 +73,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:inputType="number"
                 android:scaleX="1.2"
                 android:scaleY="1.2"
-                android:text="50" />
+                android:text="30" />
 
 
             <TextView
@@ -96,9 +99,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:inputType="number"
                 android:scaleX="1.2"
                 android:scaleY="1.2"
-                android:text="0" />
+                android:text="40" />
 
 
             <TextView
@@ -121,9 +125,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:inputType="number"
                 android:scaleX="1.2"
                 android:scaleY="1.2"
-                android:text="0" />
+                android:text="50" />
 
 
             <TextView
