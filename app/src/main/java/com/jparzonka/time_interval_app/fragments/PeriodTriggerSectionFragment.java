@@ -28,8 +28,6 @@ public class PeriodTriggerSectionFragment extends Fragment {
         sPTS = (EditText) view.findViewById(R.id.seconds_trigger_section);
         msPTS = (EditText) view.findViewById(R.id.miliseconds_trigger_section);
         microsPTS = (EditText) view.findViewById(R.id.microseconds_trigger_section);
-
-
         Button startButton = (Button) view.findViewById(R.id.period_start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +39,10 @@ public class PeriodTriggerSectionFragment extends Fragment {
 
         return view;
     }
+//
+//    private static void setValueOfFrequencyTextView(double frequency){
+//        TextView frequencyTextView = (TextView)view.
+//    }
 
     public double getSecondPTS() {
         double sPT = (Integer.parseInt(sPTS.getText().toString()));

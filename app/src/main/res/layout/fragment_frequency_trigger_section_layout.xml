@@ -1,91 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frequency_trigger_section"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <LinearLayout
+        android:id="@+id/frequency_trigger_edit_text_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/khz_trigger_section"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:inputType="number"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:text="10" />
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-        <TextView
+            <EditText
+                android:id="@+id/khz_trigger_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:inputType="number"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                android:text="10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="khz" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="khz" />
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/hz_trigger_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:inputType="number"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                android:text="10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="hz" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/mhz_trigger_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:inputType="number"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                android:text="10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="mhz" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/frequency_trigger_frequency_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/hz_trigger_section"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:inputType="number"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:text="10" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="hz" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/mhz_trigger_section"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:inputType="number"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:text="10" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="mhz" />
-    </LinearLayout>
+        android:layout_below="@+id/frequency_trigger_edit_text_linear_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:text="Period value" />
 
     <Button
         android:id="@+id/frequency_start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/frequency_trigger_frequency_text_view"
         android:layout_gravity="bottom"
         android:padding="20dp"
         android:text="@string/start" />
 
-</LinearLayout>
+</RelativeLayout>

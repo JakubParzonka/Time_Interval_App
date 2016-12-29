@@ -27,7 +27,7 @@ public class DTO {
     private double hzTrigger;
     private double mhzTrigger;
 
-    private double totalValueOfTimeIntervals, totalValueOfTrigger;
+    private static double totalValueOfTimeIntervals, totalValueOfTrigger;
 
     public DTO() throws NullPointerException {
         SendDataFragment sdf = MenuActivity.getSendDataFragment();
@@ -46,7 +46,7 @@ public class DTO {
         Log.i("DTO", "isPeriodTriggerSectionSelected: " + String.valueOf(isPeriodTriggerSectionSelected()));
         if (isPeriodTriggerSectionSelected) {
             PeriodTriggerSectionFragment ptsf = TimeIntervalModeFragment.getPeriodTriggerSectionFragment();
-            double s = ptsf.getSecondPTS(), ms = ptsf.getMilisecondPTS() / 1.0E+3, micros = ptsf.getMicrosecondsPTS() / 1.0E+6;
+            double s = ptsf.getSecondPTS() / 1.0E+3, ms = ptsf.getMilisecondPTS() / 1.0E+6, micros = ptsf.getMicrosecondsPTS() / 1.0E+9;
             Log.i("DTO/konstruktor", "s: " + String.valueOf(s));
             Log.i("DTO/konstruktor", "ms: " + String.valueOf(ms));
             Log.i("DTO/konstruktor", "micros: " + String.valueOf(micros));
@@ -209,7 +209,7 @@ public class DTO {
         this.totalValueOfTimeIntervals = totalValueOfTimeIntervals;
     }
 
-    public double getTotalValueOfTimeIntervals() {
+    public static double getTotalValueOfTimeIntervals() {
         return totalValueOfTimeIntervals;
     }
 
@@ -218,7 +218,7 @@ public class DTO {
         this.totalValueOfTrigger = totalValueOfTrigger;
     }
 
-    public double getTotalValueOfFrequencyTrigger() {
+    public static double getTotalValueOfFrequencyTrigger() {
         return totalValueOfTrigger;
     }
 }
