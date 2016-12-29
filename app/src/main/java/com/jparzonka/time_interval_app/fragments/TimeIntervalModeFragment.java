@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -34,10 +35,45 @@ public class TimeIntervalModeFragment extends Fragment {
         view = inflater.inflate(R.layout.ti_mode_layout, container, false);
 
         sTIEditText = (EditText) view.findViewById(R.id.seconds);
+        sTIEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                sTIEditText.setText("");
+                return false;
+            }
+        });
         msTIEditText = (EditText) view.findViewById(R.id.miliseconds);
+        msTIEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                msTIEditText.setText("");
+                return false;
+            }
+        });
         microsTIEditText = (EditText) view.findViewById(R.id.microseconds);
+        microsTIEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                microsTIEditText.setText("");
+                return false;
+            }
+        });
         nsTIEditText = (EditText) view.findViewById(R.id.nanoseconds);
+        nsTIEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                nsTIEditText.setText("");
+                return false;
+            }
+        });
         psTIEditText = (EditText) view.findViewById(R.id.picoseconds);
+        psTIEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                psTIEditText.setText("");
+                return false;
+            }
+        });
 
 
         RadioGroup outputWidthRadioGroup = (RadioGroup) view.findViewById(R.id.output_width_radio_group);

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +30,27 @@ public class PeriodTriggerSectionFragment extends Fragment {
         msPTS = (EditText) view.findViewById(R.id.miliseconds_trigger_section);
         microsPTS = (EditText) view.findViewById(R.id.microseconds_trigger_section);
 
+        sPTS.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                sPTS.setText("");
+                return false;
+            }
+        });
+        msPTS.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                msPTS.setText("");
+                return false;
+            }
+        });
+        microsPTS.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                microsPTS.setText("");
+                return false;
+            }
+        });
 
         Button startButton = (Button) view.findViewById(R.id.period_start_button);
         startButton.setOnClickListener(new View.OnClickListener() {

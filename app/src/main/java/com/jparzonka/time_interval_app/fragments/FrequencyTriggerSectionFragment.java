@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,7 +37,27 @@ public class FrequencyTriggerSectionFragment extends Fragment {
                 System.out.println(dto.toString());
             }
         });
-
+        kHzFTS.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                kHzFTS.setText("");
+                return false;
+            }
+        });
+        hzFTS.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hzFTS.setText("");
+                return false;
+            }
+        });
+        mHzFTS.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mHzFTS.setText("");
+                return false;
+            }
+        });
         return view;
     }
 
@@ -57,4 +78,6 @@ public class FrequencyTriggerSectionFragment extends Fragment {
         Log.i("FTSF", "getmHzFTS: " + mHzFT);
         return mHzFT;
     }
+
+
 }
