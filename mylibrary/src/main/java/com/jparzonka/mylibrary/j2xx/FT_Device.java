@@ -240,7 +240,7 @@ public class FT_Device {
         }
     }
 
-    private final boolean isHiSpeed() {
+    private boolean isHiSpeed() {
         return isFt232h() || isFt2232h() || isFt4232h();
     }
 
@@ -376,7 +376,8 @@ public class FT_Device {
                     this.mBulkInThread.start();
                     this.mProcessRequestThread.start();
                     setOpen();
-                    rc = Integer.getInteger(String.valueOf(true));
+                    //rc = Integer.getInteger(String.valueOf(true);
+                    rc = 1;
 
                 } else {
                     Log.e(TAG, "Failed to find endpoints.");
@@ -390,18 +391,18 @@ public class FT_Device {
         return Boolean.valueOf(String.valueOf(rc));
     }
 
-    public synchronized boolean isOpen() {
-        return this.mIsOpen.booleanValue();
+    public synchronized boolean isOpen() throws NullPointerException {
+        return this.mIsOpen;
     }
 
     private synchronized void setOpen() {
-        this.mIsOpen = Boolean.valueOf(true);
+        this.mIsOpen = true;
         FtDeviceInfoListNode ftDeviceInfoListNode = this.mDeviceInfoNode;
         ftDeviceInfoListNode.flags |= 1;
     }
 
     private synchronized void setClosed() {
-        this.mIsOpen = Boolean.valueOf(false);
+        this.mIsOpen = false;
         FtDeviceInfoListNode ftDeviceInfoListNode = this.mDeviceInfoNode;
         ftDeviceInfoListNode.flags &= 2;
     }

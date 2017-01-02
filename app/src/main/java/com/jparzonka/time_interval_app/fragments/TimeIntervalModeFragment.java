@@ -121,7 +121,7 @@ public class TimeIntervalModeFragment extends Fragment {
     }
 
     private void setOutputWidth(double outputWidth) {
-        this.outputWidth = outputWidth;
+        TimeIntervalModeFragment.outputWidth = outputWidth;
     }
 
     public double getsTI() {

@@ -1,6 +1,7 @@
 package com.jparzonka.time_interval_app.fragments;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -126,6 +128,7 @@ public class InfoPanelFragment extends Fragment {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void getDeviceInformation() throws InterruptedException {
         int devCount = 0;
 
@@ -133,16 +136,26 @@ public class InfoPanelFragment extends Fragment {
         Log.i("FtdiModeControl",
                 "Device number = " + Integer.toString(devCount));
         if (devCount > 0) {
+//            Toast.makeText(getContext(), "InfoPanel: devCount > 0", Toast.LENGTH_SHORT).show();
+//            FT_Device ftDevice = d2xxManager.openByIndex(deviceInformationContext, currect_index);
+//
+//
+//            if (ftDevice != null) {
+//                Toast.makeText(getContext(), "InfoPanel: ftDevice is NOT a null", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(getContext(), "InfoPanel: ftDevice == null", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            if (ftDevice.isOpen()) {
+//                Toast.makeText(getContext(), "InfoPanel: ftDevice is not null", Toast.LENGTH_SHORT).show();
+//            }
+
+
             D2xxManager.FtDeviceInfoListNode[] deviceList = new D2xxManager.FtDeviceInfoListNode[devCount];
 
-
-            d2xxManager.getDeviceInfoListDetail(devCount);
-
-
-            deviceList[0] = d2xxManager.getDeviceInfoListDetail(0);
-
+            deviceList[0] = d2xxManager.getDeviceInfoListDetail(devCount);
             deviceNumberTextView.setText("Count of devices: " + Integer.toString(devCount));
-            //TODO ===> RZUCA NULL'EM
             if (deviceList[0].serialNumber == null) {
                 serialNumberTextView.setText("Serial number: " + deviceList[0].serialNumber + "(No Serial number)");
             } else {
@@ -209,6 +222,7 @@ public class InfoPanelFragment extends Fragment {
                     break;
             }
         } else {
+            Toast.makeText(getContext(), "InfoPanel: devCount =< 0", Toast.LENGTH_SHORT).show();
             deviceNumberTextView.setText("Number of devices: 0");
             deviceNameTextView.setText("Device Name : No device");
             serialNumberTextView.setText("Device Serial Number:");
@@ -235,6 +249,7 @@ public class InfoPanelFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
     // 16842924
     private BroadcastReceiver mUsbPlugEvents = new BroadcastReceiver() {
         @Override

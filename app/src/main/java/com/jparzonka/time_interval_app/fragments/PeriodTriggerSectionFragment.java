@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
-import com.jparzonka.time_interval_app.DTO.DTO;
 import com.jparzonka.time_interval_app.R;
 
 /**
@@ -52,14 +50,6 @@ public class PeriodTriggerSectionFragment extends Fragment {
             }
         });
 
-        Button startButton = (Button) view.findViewById(R.id.period_start_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DTO dto = new DTO();
-                System.out.println(dto.toString());
-            }
-        });
 
         return view;
     }

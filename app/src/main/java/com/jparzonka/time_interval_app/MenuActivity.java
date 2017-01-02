@@ -8,8 +8,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,14 +23,20 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jparzonka.mylibrary.j2xx.D2xxManager;
+import com.jparzonka.mylibrary.j2xx.FT_Device;
 import com.jparzonka.time_interval_app.fragments.InfoPanelFragment;
 import com.jparzonka.time_interval_app.fragments.IntroduceFragment;
 import com.jparzonka.time_interval_app.fragments.SendDataFragment;
 import com.jparzonka.time_interval_app.log_handler.LogHandler;
 import com.jparzonka.time_interval_app.navigation_drawer.NavigationDrawerFragment;
+import com.jparzonka.time_interval_app.sending_hanlder.ConnectionHandler;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.CrashManagerListener;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class MenuActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     /**
@@ -35,32 +45,37 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-
+    private static final String SERIAL_NUMBER = "FTS9MKOJ";
     private static SendDataFragment sendDataFragment;
-    public static D2xxManager ftD2xx = null;
-    public static int currect_index = 0;
+    private static ConnectionHandler connectionHandler;
+    private static D2xxManager d2xxManager = null;
+    private static Context context;
+    public static int currentIndex = 0;
     public static int old_index = -1;
     private static Fragment currentFragment = null;
     private CharSequence mTitle;
+    private UsbInterface intf;
+
+    private static FT_Device ftDev;
+    int openIndex = 0;
+    int devCount = -1;
+    private static UsbDevice usbDeviceT5300;
 
     public MenuActivity() {
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
-            ftD2xx = D2xxManager.getInstance(this);
+            d2xxManager = D2xxManager.getInstance(this);
         } catch (D2xxManager.D2xxException ex) {
             ex.printStackTrace();
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        LogHandler lg = new LogHandler();
-        try {
-            InfoPanelFragment.setParameters(getApplicationContext(), ftD2xx);
-        } catch (Exception e) {
-            LogHandler.handleLog(getApplicationContext(), e.getMessage(), 11);
-        }
+        InfoPanelFragment.setParameters(getApplicationContext(), d2xxManager);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
@@ -83,6 +98,63 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
                 return true;
             }
         });
+
+//        if (devCount <= 0) {
+//            //Toast.makeText(getApplicationContext(), "MA: devCount <= 0", Toast.LENGTH_SHORT).show();
+//            createDeviceList();
+//        } else {
+//            //Toast.makeText(getApplicationContext(), "MA: devCount > 0", Toast.LENGTH_SHORT).show();
+//            connectFunction();
+//        }
+
+        UsbManager mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        HashMap<String, UsbDevice> deviceList = mUsbManager.getDeviceList();
+        Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
+
+        while (deviceIterator.hasNext()) {
+            UsbDevice device = deviceIterator.next();
+            String s = device.getSerialNumber();
+            if (Objects.equals(s, SERIAL_NUMBER)) {
+                //Toast.makeText(this, "Ciastko", Toast.LENGTH_SHORT).show();
+                setUsbDeviceT5300(device);
+            }
+//            Toast.makeText(this, device.getSerialNumber(), Toast.LENGTH_SHORT).show();
+        }
+        try {
+            //   Toast.makeText(this, "T5300U: " + getUsbDeviceT5300().getSerialNumber(), Toast.LENGTH_SHORT).show();
+            intf = usbDeviceT5300.getInterface(0);
+            //   Toast.makeText(this, "Interface name: " + intf.getName(), Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            Toast.makeText(this, "MA: There is no FTDI device attached!", Toast.LENGTH_SHORT).show();
+        }
+        int i = d2xxManager.createDeviceInfoList(this);
+        Toast.makeText(this, "MA: device info list " + String.valueOf(i), Toast.LENGTH_SHORT);
+
+        int devCount = deviceList.size();
+
+        if (devCount > 0) {
+            Toast.makeText(this, "MA: devCount > 0", Toast.LENGTH_SHORT).show();
+            ftDev = new FT_Device(this, mUsbManager, usbDeviceT5300, intf);
+            SendDataFragment.setParameters(getApplicationContext(), d2xxManager, ftDev);
+            //  ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
+            //  ftDev = d2xxManager.openByIndex(this, currect_index);
+            if (ftDev == null) {
+                Toast.makeText(this, "MA: ftDev == null", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                //ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
+                Toast.makeText(this, "MA: ftDev != null", Toast.LENGTH_SHORT).show();
+            }
+            try {
+                if (ftDev.isOpen()) {
+                    Toast.makeText(this, "MA: ftDev is open", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "MA: tDev is not open", Toast.LENGTH_SHORT).show();
+                }
+            } catch (NullPointerException e) {
+                Toast.makeText(this, "MA: isOpen() throws null :/", Toast.LENGTH_SHORT).show();
+            }
+        } else Toast.makeText(this, "MA: devCount =< 0", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -134,24 +206,22 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
     public void onNavigationDrawerItemSelected(int position) {
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-
         if (position == 0) {
-            IntroduceFragment introduceFragment = new IntroduceFragment();
-            fragmentTransaction.replace(android.R.id.content, introduceFragment).commit();
+            sendDataFragment = new SendDataFragment(ftDev);
+            fragmentTransaction.replace(android.R.id.content, sendDataFragment).commit();
         } else if (position == 1) {
             try {
-                InfoPanelFragment infoPanelFragment = new InfoPanelFragment(getApplicationContext(), ftD2xx);
+                InfoPanelFragment infoPanelFragment = new InfoPanelFragment(getApplicationContext(), d2xxManager);
                 fragmentTransaction.replace(android.R.id.content, infoPanelFragment).commit();
             } catch (Exception e) {
                 LogHandler.handleLog(getApplicationContext(), e.getMessage(), 12);
             }
         } else if (position == 2) {
-            sendDataFragment = new SendDataFragment();
-            fragmentTransaction.replace(android.R.id.content, sendDataFragment).commit();
+            IntroduceFragment introduceFragment = new IntroduceFragment();
+            fragmentTransaction.replace(android.R.id.content, introduceFragment).commit();
         } else if (position == 3) {
             Toast.makeText(this, "NOT READY YET", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void onSectionAttached(int number) {
@@ -220,5 +290,79 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
 
     public static SendDataFragment getSendDataFragment() {
         return sendDataFragment;
+    }
+
+    public static D2xxManager getd2xxManager() {
+        return d2xxManager;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    private static void setContext(Context context) {
+        MenuActivity.context = context;
+
+    }
+
+    public static ConnectionHandler getConnectionHandler() {
+        return connectionHandler;
+    }
+
+    public static UsbDevice getUsbDeviceT5300() {
+        return usbDeviceT5300;
+    }
+
+    public static void setUsbDeviceT5300(UsbDevice usbDeviceT5300) {
+        MenuActivity.usbDeviceT5300 = usbDeviceT5300;
+    }
+
+    public static FT_Device getFtDev() {
+        if (ftDev != null) {
+            return ftDev;
+        } else {
+            return null;
+        }
+    }
+
+    public static void sendDataToGenerator(byte[] outputData){
+
+//        if (MenuActivity.getUsbDeviceT5300() == null) {
+//            Toast.makeText(deviceContext, "open device port(" + tmpProtNumber + ") NG, ftDevice == null", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        if (outputData != null)
+            Toast.makeText(MenuActivity.context, "SDF: outputData size = " + outputData.length, Toast.LENGTH_SHORT).show();
+        else {
+            Toast.makeText(getContext(), "SDF: outputData is null", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            if (ftDev.isOpen()) {
+                Toast.makeText(getContext(), "SDF: open device port OK", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "device not open", Toast.LENGTH_SHORT).show();
+                Log.e("j2xx", "SendMessage: device not open");
+            }
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), "SDF: isOpen() throws null :/", Toast.LENGTH_SHORT).show();
+        }
+//        ftDevice.setLatencyTimer((byte) 16);
+//        Log.i("CH/sendMessage", "latencyTimer set");
+//        try {
+        try {
+            int result = ftDev.write(outputData);
+            Toast.makeText(getContext(), "SDF: WRITE: " + result, Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), "SDF/CAS: ftDev == null", Toast.LENGTH_SHORT).show();
+        }
+        //       } catch (NullPointerException npe) {
+        //        Toast.makeText(deviceContext, npe.getMessage(), Toast.LENGTH_SHORT).show();}
+    }
+
+    public void setFtDev(FT_Device ftDev) {
+        this.ftDev = ftDev;
     }
 }

@@ -54,5 +54,52 @@
         android:layout_below="@+id/mode_layout"
         android:layout_gravity="bottom" />
 
+    <RelativeLayout
+        android:id="@+id/checkbox_relative_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/start_button">
 
+        <TextView
+            android:id="@+id/polarization_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/inverted_polarization" />
+
+        <CheckBox
+            android:id="@+id/signal_A_polarization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/polarization_title"
+            android:layout_marginRight="10dp"
+            android:text="@string/output_a" />
+
+        <CheckBox
+            android:id="@+id/signal_B_polarization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/polarization_title"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/signal_A_polarization"
+            android:text="@string/output_b" />
+
+        <CheckBox
+            android:id="@+id/signal_CW_polarization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/polarization_title"
+            android:layout_toRightOf="@id/signal_B_polarization"
+            android:text="@string/output_cw" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:padding="20dp"
+        android:text="@string/start" />
 </RelativeLayout>

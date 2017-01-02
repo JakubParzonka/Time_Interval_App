@@ -1,4 +1,4 @@
-package com.jparzonka.time_interval_app.DTO;
+package com.jparzonka.time_interval_app.data;
 
 import android.util.Log;
 
@@ -26,7 +26,8 @@ public class DTO {
     private double khzTrigger;
     private double hzTrigger;
     private double mhzTrigger;
-
+    private double OCT, DAC;
+    private boolean hasSignal_A_InvertedPolarization, hasSignal_B_InvertedPolarization, hasSignal_CW_InvertedPolarization;
     private double totalValueOfTimeIntervals, totalValueOfTrigger;
 
     public DTO() throws NullPointerException {
@@ -69,6 +70,13 @@ public class DTO {
 
         setTotalValueOfTimeIntervals(calculateTotalValueOfTimeIntervalsADouble());
         setTotalValueOfTrigger(calculateTotalValueOfFreqencyTriggerADouble());
+
+        setOCT();
+        setDAC();
+
+        setHasSignal_A_InvertedPolarization(sdf.hasSignal_A_InvertedPolarization());
+        setHasSignal_B_InvertedPolarization(sdf.hasSignal_B_InvertedPolarization());
+        setHasSignal_CW_InvertedPolarization(sdf.hasSignal_CW_InvertedPolarization());
     }
 
     private double calculateTotalValueOfTimeIntervalsADouble() {
@@ -103,6 +111,11 @@ public class DTO {
                 ", khzTrigger=" + khzTrigger +
                 ", hzTrigger=" + hzTrigger +
                 ", mhzTrigger=" + mhzTrigger +
+                ", OCT=" + OCT +
+                ", DAC=" + DAC +
+                ", hasSignal_A_InvertedPolarization=" + hasSignal_A_InvertedPolarization +
+                ", hasSignal_B_InvertedPolarization=" + hasSignal_B_InvertedPolarization +
+                ", hasSignal_CW_InvertedPolarization=" + hasSignal_CW_InvertedPolarization +
                 ", totalValueOfTimeIntervals=" + totalValueOfTimeIntervals +
                 ", totalValueOfTrigger=" + totalValueOfTrigger +
                 '}';
@@ -220,5 +233,49 @@ public class DTO {
 
     public double getTotalValueOfFrequencyTrigger() {
         return totalValueOfTrigger;
+    }
+
+    public double getOCT() {
+        return OCT;
+    }
+
+    public void setOCT() {
+        double f = getTotalValueOfFrequencyTrigger();
+        OCT = 3.322 * Math.log10(f / 1039);
+        Log.i("DTO/OCT", String.valueOf(OCT));
+    }
+
+    public double getDAC() {
+        return DAC;
+    }
+
+    public void setDAC() {
+        double f = getTotalValueOfFrequencyTrigger();
+        DAC = 2048 - ((2078 * Math.pow(2, 10 + getOCT())) / f);
+        Log.i("DTO/DAC", String.valueOf(DAC));
+    }
+
+    public boolean isHasSignal_A_InvertedPolarization() {
+        return hasSignal_A_InvertedPolarization;
+    }
+
+    public void setHasSignal_A_InvertedPolarization(boolean hasSignal_A_InvertedPolarization) {
+        this.hasSignal_A_InvertedPolarization = hasSignal_A_InvertedPolarization;
+    }
+
+    public boolean isHasSignal_B_InvertedPolarization() {
+        return hasSignal_B_InvertedPolarization;
+    }
+
+    public void setHasSignal_B_InvertedPolarization(boolean hasSignal_B_InvertedPolarization) {
+        this.hasSignal_B_InvertedPolarization = hasSignal_B_InvertedPolarization;
+    }
+
+    public boolean isHasSignal_CW_InvertedPolarization() {
+        return hasSignal_CW_InvertedPolarization;
+    }
+
+    public void setHasSignal_CW_InvertedPolarization(boolean hasSignal_CW_InvertedPolarization) {
+        this.hasSignal_CW_InvertedPolarization = hasSignal_CW_InvertedPolarization;
     }
 }

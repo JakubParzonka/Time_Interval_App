@@ -19,4 +19,8 @@
     <string name="period">Period</string>
     <string name="frequency2">Frequency</string>
     <string name="start">Start</string>
+    <string name="inverted_polarization">Inverted polarization:</string>
+    <string name="output_a">Output A</string>
+    <string name="output_b">Output B</string>
+    <string name="output_cw">Output CW</string>
 </resources>

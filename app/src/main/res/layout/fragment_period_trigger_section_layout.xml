@@ -88,12 +88,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/period_start_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/period_trigger_edit_text_linear_layout"
-        android:layout_gravity="bottom"
-        android:padding="20dp"
-        android:text="@string/start" />
 </RelativeLayout>

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.jparzonka.time_interval_app.DTO.DTO;
+import com.jparzonka.time_interval_app.data.DTO;
 import com.jparzonka.time_interval_app.R;
 
 /**
