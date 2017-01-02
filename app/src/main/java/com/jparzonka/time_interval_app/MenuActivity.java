@@ -75,6 +75,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        MenuActivity.context = getApplicationContext();
         InfoPanelFragment.setParameters(getApplicationContext(), d2xxManager);
 
         IntentFilter filter = new IntentFilter();
@@ -135,7 +136,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         if (devCount > 0) {
             Toast.makeText(this, "MA: devCount > 0", Toast.LENGTH_SHORT).show();
             ftDev = new FT_Device(this, mUsbManager, usbDeviceT5300, intf);
-            SendDataFragment.setParameters(getApplicationContext(), d2xxManager, ftDev);
+            SendDataFragment.setParameters(getApplicationContext(), d2xxManager);
             //  ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
             //  ftDev = d2xxManager.openByIndex(this, currect_index);
             if (ftDev == null) {
@@ -317,15 +318,8 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         MenuActivity.usbDeviceT5300 = usbDeviceT5300;
     }
 
-    public static FT_Device getFtDev() {
-        if (ftDev != null) {
-            return ftDev;
-        } else {
-            return null;
-        }
-    }
 
-    public static void sendDataToGenerator(byte[] outputData){
+    public void sendDataToGenerator(byte[] outputData) {
 
 //        if (MenuActivity.getUsbDeviceT5300() == null) {
 //            Toast.makeText(deviceContext, "open device port(" + tmpProtNumber + ") NG, ftDevice == null", Toast.LENGTH_SHORT).show();
@@ -333,30 +327,30 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
 //        }
 
         if (outputData != null)
-            Toast.makeText(MenuActivity.context, "SDF: outputData size = " + outputData.length, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getAppContext(), "MA/SDTG: outputData size = " + outputData.length, Toast.LENGTH_SHORT).show();
         else {
-            Toast.makeText(getContext(), "SDF: outputData is null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getAppContext(), "MA/SDTG: outputData is null", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
             if (ftDev.isOpen()) {
-                Toast.makeText(getContext(), "SDF: open device port OK", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getAppContext(), "MA/SDTG: open device port OK", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "device not open", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getAppContext(), "device not open", Toast.LENGTH_SHORT).show();
                 Log.e("j2xx", "SendMessage: device not open");
             }
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "SDF: isOpen() throws null :/", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getAppContext(), "MA/SDTG: isOpen() throws null :/", Toast.LENGTH_SHORT).show();
         }
 //        ftDevice.setLatencyTimer((byte) 16);
 //        Log.i("CH/sendMessage", "latencyTimer set");
 //        try {
         try {
             int result = ftDev.write(outputData);
-            Toast.makeText(getContext(), "SDF: WRITE: " + result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getAppContext(), "MA/SDTG: WRITE: " + result, Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "SDF/CAS: ftDev == null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getAppContext(), "MA/SDTG: ftDev == null", Toast.LENGTH_SHORT).show();
         }
         //       } catch (NullPointerException npe) {
         //        Toast.makeText(deviceContext, npe.getMessage(), Toast.LENGTH_SHORT).show();}
@@ -364,5 +358,10 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
 
     public void setFtDev(FT_Device ftDev) {
         this.ftDev = ftDev;
+    }
+
+
+    public static Context getAppContext() {
+        return MenuActivity.context;
     }
 }

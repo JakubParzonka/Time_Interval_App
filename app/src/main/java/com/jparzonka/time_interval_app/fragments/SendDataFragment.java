@@ -57,10 +57,9 @@ public class SendDataFragment extends Fragment {
 
     private static final String SERIAL_NUMBER = "FTS9MKOJ";
 
-    public static void setParameters(Context contextParent, D2xxManager d2xxManager, FT_Device ftDevice) {
+    public static void setParameters(Context contextParent, D2xxManager d2xxManager) {
         deviceContext = contextParent;
         SendDataFragment.d2xxManager = d2xxManager;
-        SendDataFragment.ftDevice = ftDevice;
     }
 
     @SuppressLint("ValidFragment")
@@ -133,19 +132,17 @@ public class SendDataFragment extends Fragment {
         for (byte c : outData) {
             System.out.format("%d ", c);
         }
-        if (deviceContext.equals(null)/* || d2xxManager.equals(null)*/)
-            throw new NullPointerException("Context in PTSF is null!");
-        else
-            Log.i("PTSF/C", "Context is not null");
-        MenuActivity.sendDataToGenerator(outData);
+//        if (deviceContext.equals(null)/* || d2xxManager.equals(null)*/)
+//            throw new NullPointerException("Context in PTSF is null!");
+//        else
+//            Log.i("PTSF/C", "Context is not null");
+        new MenuActivity().sendDataToGenerator(outData);
 //            boolean broadcastStatus = sendMessage(outData);
 //            if (broadcastStatus) {
 //                Log.i("SendDataFragment/B", "sendMessage ->" + broadcastStatus);
 //            }
 //          ConnectionHandler connectionHandler = new ConnectionHandler();
 //          Log.i("PTSF/startButton", "SendStatus: " + connectionHandler.sendMessage(outData));
-        System.out.println(dto.toString());
-
 
     }
 
