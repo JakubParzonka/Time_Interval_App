@@ -23,4 +23,5 @@
     <string name="output_a">Output A</string>
     <string name="output_b">Output B</string>
     <string name="output_cw">Output CW</string>
+    <string name="reset">Reset</string>
 </resources>

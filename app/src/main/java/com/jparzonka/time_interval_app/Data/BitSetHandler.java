@@ -2,8 +2,12 @@ package com.jparzonka.time_interval_app.data;
 
 import android.util.Log;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.BitSet;
+import java.util.Locale;
 
 /**
  * Created by Jakub on 2016-12-29.
@@ -47,48 +51,56 @@ public class BitSetHandler {
         BitSet dataBytes = CommandAddresses.getSET_S_BitSetAddres();
         BitSet bs = getST(dto);
         //ST0
+        Log.i("ST0", String.valueOf(bs.get(0)));
         dataBytes.set(16, bs.get(0));
         //ST1
+        Log.i("ST1", String.valueOf(bs.get(1)));
         dataBytes.set(17, bs.get(1));
         //XX
-        dataBytes.set(18, 19, false);
+        dataBytes.set(18, 20, false);
         //MODE
-        if (dto.getSelectedMode() == "TI")
+        if (dto.getSelectedMode() == "TI") {
             dataBytes.set(20, false);
-        else if (dto.getSelectedMode() == "F")
+            Log.i("MODE", "TI");
+        } else if (dto.getSelectedMode() == "F") {
             dataBytes.set(20, true);
-        else Log.e("BitSetHandler", "Wrong selected mode");
+            Log.i("MODE", "FREQUENCY");
+        } else Log.e("BitSetHandler", "Wrong selected mode");
         //CK10M_INT
         if (dto.isExternalClockSelected()) {
+            Log.i("EXTERNAL CLOCK", "YES");
             dataBytes.set(21, false);
         } else {
+            Log.i("EXTERNAL CLOCK", "NO");
             dataBytes.set(21, true);
         }
         //XX
-        dataBytes.set(22, 23, false);
+        dataBytes.set(22, 24, false);
         //A2
+        Log.i("A - inverted", String.valueOf(dto.isHasSignal_A_InvertedPolarization()));
         dataBytes.set(24, dto.isHasSignal_A_InvertedPolarization());
         //XX
-        dataBytes.set(25, 26, false);
+        dataBytes.set(25, 27, false);
         //B2
+        Log.i("B - inverted", String.valueOf(dto.isHasSignal_B_InvertedPolarization()));
         dataBytes.set(27, dto.isHasSignal_B_InvertedPolarization());
         //XX
-        dataBytes.set(28, 29, false);
+        dataBytes.set(28, 30, false);
         //C2
+        Log.i("CW - inverted", String.valueOf(dto.isHasSignal_CW_InvertedPolarization()));
         dataBytes.set(30, dto.isHasSignal_CW_InvertedPolarization());
         //X
         dataBytes.set(31, false);
         //Dopełniam do 3 bajtów danych
-        dataBytes.set(32, 39, false);
+        dataBytes.set(32, 40, false);
         Log.i("dataBytes toString", dataBytes.toString());
         Log.i("BitSetHandler/getSET_S", "dataBytes size ->" + dataBytes.size());
-
         return dataBytes;
     }
 
-    public BitSet getRESET_BitSet() {
+    public static BitSet getRESET_BitSet() {
         BitSet dataBytes = CommandAddresses.getRESET_BitSetAddres();
-        dataBytes.set(15, 39, false);
+        dataBytes.set(16, 40, false);
         return dataBytes;
     }
 
@@ -100,27 +112,65 @@ public class BitSetHandler {
         return dataBytes;
     }
 
-    public void verifyOCT_and_DAC() {
-        double OCT = dto.getOCT();
-        DecimalFormat df2 = new DecimalFormat("###.###");
-        OCT = Double.valueOf(df2.format(OCT));
-        float f = (float) OCT;
-        BitSet octBitSet = Bits.convert(f);
-        Log.i("BitSetHandler/verifyOCT", "octBitSet toString ->" + octBitSet.toString());
-        Log.i("BitSetHandler/verifyOCT", "octBitSet cardinality ->" + octBitSet.cardinality());
-        Log.i("BitSetHandler/verifyOCT", "octBitSet size ->" + octBitSet.size());
-        Log.i("BitSetHandler", "float OCT = " + f);
-        int i = Float.floatToIntBits(f);
-        String s = Integer.toBinaryString(i);
-        Log.i("BitSetHandler", "OCT = " + s);
-        Log.i("BitSetHandler", "OCT = " + OCT);
-        Double DAC = dto.getDAC();
-        s = Long.toBinaryString(Double.doubleToRawLongBits(DAC));
-        DAC = Double.valueOf(df2.format(DAC));
-        Log.i("BitSetHandler", "DAC = " + DAC);
-        Log.i("BitSetHandler", "DAC = " + s);
-        Log.i("BitSetHandler", "DAC = " + DAC);
+    public BitSet getTRIG_DIV_BitSet() {
+        BitSet dataBytes = CommandAddresses.getTIRG_DIV_BitSetAddres();
+        String s = Integer.toBinaryString(8);
+        // TODO przenieść to do oddzielnej metody
+        char[] data = s.toCharArray();
+        int dataSize = data.length;
+      //  System.out.println("getTRIG_DIV_BitSet char size: " + dataSize + "\narray:\n");
+        for (char c : data) {
+            System.out.println(c + " ");
+        }
+
+        int lackOfSpace = 4 - dataSize;
+        //pierwsza pętla zapełniająca danymi
+        for (int i = 0; i < dataSize; i++) {
+            if (data[dataSize - i - 1] == '1') {
+                dataBytes.set(16 + i, true);
+            } else if (data[dataSize - i - 1] == '0') {
+                dataBytes.set(16 + i, false);
+            } else {
+                Log.i("BitSetHandler", "Wrong value in char array");
+            }
+        }
+        dataBytes.set(20, 40, false);
+        Log.i("BitSetHandler", "TRIG_DIV: " + dataBytes.toString());
+        return dataBytes;
     }
 
+    public void verifyOCT_and_DAC() {
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
+        DecimalFormat df2 = (DecimalFormat) nf; //new DecimalFormat("###.###");
+        double OCT = Double.parseDouble(df2.format(dto.getOCT()));
+        int i = (int) OCT;
+        Log.i("BitSetHandler", "double OCT = " + OCT);
+        Log.i("BitSetHandler", "int OCT = " + i);
+        String s = Integer.toBinaryString(i);
+        Log.i("BitSetHandler", "binary OCT = " + s);
+
+        double DAC = Double.parseDouble(df2.format(dto.getDAC()));
+        i = (int) DAC;
+        s = convert(DAC);
+        //s = Long.toBinaryString(Long.valueOf(String.valueOf(i)));
+        DAC = Double.valueOf(df2.format(DAC));
+        Log.i("BitSetHandler", "double DAC = " + DAC);
+        Log.i("BitSetHandler", "int DAC = " + i);
+        Log.i("BitSetHandler", "binary DAC = " + s);
+    }
+
+    public static String convert(double number) {
+        int n = 10;  // constant?
+        BigDecimal bd = new BigDecimal(number);
+        BigDecimal mult = new BigDecimal(2).pow(n);
+        bd = bd.multiply(mult);
+        BigInteger bi = bd.toBigInteger();
+        StringBuilder str = new StringBuilder(bi.toString(2));
+        while (str.length() < n + 1) {  // +1 for leading zero
+            str.insert(0, "0");
+        }
+        str.insert(str.length() - n, ".");
+        return str.toString();
+    }
 
 }

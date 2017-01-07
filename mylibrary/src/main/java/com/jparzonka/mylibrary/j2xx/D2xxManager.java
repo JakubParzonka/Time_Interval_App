@@ -432,7 +432,7 @@ public class D2xxManager {
         return 543162368;
     }
 
-    private boolean tryOpen(Context parentContext, FT_Device ftDev, DriverParameters params) {
+    public boolean tryOpen(Context parentContext, FT_Device ftDev, DriverParameters params) {
         boolean rc = false;
         if (ftDev == null) {
             return Boolean.getBoolean(String.valueOf(FT_DEVICE_232B));

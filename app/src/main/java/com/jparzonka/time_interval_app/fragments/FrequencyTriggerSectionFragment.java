@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
-import com.jparzonka.time_interval_app.data.DTO;
 import com.jparzonka.time_interval_app.R;
 
 /**
@@ -29,14 +27,6 @@ public class FrequencyTriggerSectionFragment extends Fragment {
         hzFTS = (EditText) view.findViewById(R.id.hz_trigger_section);
         mHzFTS = (EditText) view.findViewById(R.id.mhz_trigger_section);
 
-        Button startButton = (Button) view.findViewById(R.id.frequency_start_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DTO dto = new DTO();
-                System.out.println(dto.toString());
-            }
-        });
         kHzFTS.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

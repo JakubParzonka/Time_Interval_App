@@ -35,13 +35,13 @@ public class TimeIntervalModeFragment extends Fragment {
         view = inflater.inflate(R.layout.ti_mode_layout, container, false);
 
         sTIEditText = (EditText) view.findViewById(R.id.seconds);
-        sTIEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                sTIEditText.setText("");
-                return false;
-            }
-        });
+//        sTIEditText.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                sTIEditText.setText("");
+//                return false;
+//            }
+//        });
         msTIEditText = (EditText) view.findViewById(R.id.miliseconds);
         msTIEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override

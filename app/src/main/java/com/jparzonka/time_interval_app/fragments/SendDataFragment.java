@@ -1,7 +1,6 @@
 package com.jparzonka.time_interval_app.fragments;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -45,6 +44,10 @@ public class SendDataFragment extends Fragment {
     private static TimeIntervalModeFragment timeIntervalModeFragment;
     private static FrequencyModeFragment frequencyModeFragment;
     private static CheckBox checkBoxA, checkBoxB, checkBoxCW;
+
+    public static Context getDeviceContext() {
+        return deviceContext;
+    }
 
     private static Context deviceContext;
     private static D2xxManager d2xxManager;
@@ -111,9 +114,21 @@ public class SendDataFragment extends Fragment {
         checkBoxCW = (CheckBox) view.findViewById(R.id.signal_CW_polarization);
         Button startButton = (Button) view.findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 handleSending();
+            }
+        });
+
+        Button resetButton = (Button) view.findViewById(R.id.reset_button);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+//                BitSet reset = BitSetHandler.getRESET_BitSet();
+//                byte[] outData = reset.toByteArray();
+//                new MenuActivity().sendDataToGenerator(outData);
             }
         });
         IntentFilter filter = new IntentFilter();
@@ -121,29 +136,32 @@ public class SendDataFragment extends Fragment {
         return view;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @SuppressLint("ShowToast")
     private void handleSending() {
         DTO dto = new DTO();
         BitSetHandler s = new BitSetHandler(dto);
-        // s.verifyOCT_and_DAC();
-        BitSet set_s = s.getSET_S_BitSet();
-        byte[] outData = set_s.toByteArray();
+        s.verifyOCT_and_DAC();
+        BitSet data = s.getSET_S_BitSet();
+        byte[] outData = data.toByteArray();
+        Toast.makeText(deviceContext, "BitSetHandler/SET_S: " + data.toString()
+                , Toast.LENGTH_SHORT);
         Log.i("PTSF/startButton", "outData size -> " + outData.length);
         for (byte c : outData) {
-            System.out.format("%d ", c);
+            System.out.format("SDF/handleSending/ad:%d \n", c);
         }
-//        if (deviceContext.equals(null)/* || d2xxManager.equals(null)*/)
-//            throw new NullPointerException("Context in PTSF is null!");
-//        else
-//            Log.i("PTSF/C", "Context is not null");
-        new MenuActivity().sendDataToGenerator(outData);
-//            boolean broadcastStatus = sendMessage(outData);
-//            if (broadcastStatus) {
-//                Log.i("SendDataFragment/B", "sendMessage ->" + broadcastStatus);
-//            }
-//          ConnectionHandler connectionHandler = new ConnectionHandler();
-//          Log.i("PTSF/startButton", "SendStatus: " + connectionHandler.sendMessage(outData));
 
+        new MenuActivity().sendDataToGenerator(outData);
+        data = s.getTRIG_DIV_BitSet();
+        outData = data.toByteArray();
+        Toast.makeText(deviceContext, "BitSetHandler/TRIG_DIV: " + data.toString()
+                , Toast.LENGTH_SHORT);
+        Log.i("PTSF/startButton", "outData size -> " + outData.length);
+        for (byte c : outData) {
+            System.out.format("SDF/handleSending/data:%d \n", c);
+        }
+
+        new MenuActivity().sendDataToGenerator(outData);
     }
 
     public void connectAndSend(byte[] outData) {

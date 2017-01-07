@@ -84,6 +84,11 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         filter.setPriority(500);
         this.registerReceiver(mUsbReceiver, filter);
 
+        if (d2xxManager != null)
+            Toast.makeText(this, "MA: D2xxManager not null", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, "MA: D2xxManager is null", Toast.LENGTH_SHORT).show();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -132,12 +137,13 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         Toast.makeText(this, "MA: device info list " + String.valueOf(i), Toast.LENGTH_SHORT);
 
         int devCount = deviceList.size();
-
+        SendDataFragment.setParameters(getApplicationContext(), d2xxManager);
         if (devCount > 0) {
             Toast.makeText(this, "MA: devCount > 0", Toast.LENGTH_SHORT).show();
             ftDev = new FT_Device(this, mUsbManager, usbDeviceT5300, intf);
-            SendDataFragment.setParameters(getApplicationContext(), d2xxManager);
-            //  ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
+            // ftDev = d2xxManager.openByUsbDevice(getApplicationContext(), usbDeviceT5300);
+            //TODO tryOpen rzuca false!!
+            Toast.makeText(this, "MA/tryOpen: " + d2xxManager.tryOpen(this, ftDev, null), Toast.LENGTH_SHORT).show();
             //  ftDev = d2xxManager.openByIndex(this, currect_index);
             if (ftDev == null) {
                 Toast.makeText(this, "MA: ftDev == null", Toast.LENGTH_SHORT).show();
@@ -169,27 +175,6 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         this.unregisterReceiver(mUsbReceiver);
         super.onDestroy();
     }
-
-   /* public void infoDeviceTextViewOnClick(View view) {
-        Fragment fragment = new InfoPanelFragment();
-        //fragment.setArguments(getIntent().getExtras());
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id., fragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
-
-//        Intent intent = new Intent(this, InfoPanel.class);
-//        startActivity(intent);
-
-    }
-
-    public void sendDataTextViewOnClick(View view) {
-        Intent intent = new Intent(this, SendDataActivity.class);
-        startActivity(intent);
-
-    }*/
-
 
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -321,11 +306,6 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
 
     public void sendDataToGenerator(byte[] outputData) {
 
-//        if (MenuActivity.getUsbDeviceT5300() == null) {
-//            Toast.makeText(deviceContext, "open device port(" + tmpProtNumber + ") NG, ftDevice == null", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
         if (outputData != null)
             Toast.makeText(getAppContext(), "MA/SDTG: outputData size = " + outputData.length, Toast.LENGTH_SHORT).show();
         else {
@@ -343,23 +323,18 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         } catch (NullPointerException e) {
             Toast.makeText(getAppContext(), "MA/SDTG: isOpen() throws null :/", Toast.LENGTH_SHORT).show();
         }
-//        ftDevice.setLatencyTimer((byte) 16);
-//        Log.i("CH/sendMessage", "latencyTimer set");
-//        try {
         try {
+            ftDev.setLatencyTimer((byte) 16);
             int result = ftDev.write(outputData);
             Toast.makeText(getAppContext(), "MA/SDTG: WRITE: " + result, Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
             Toast.makeText(getAppContext(), "MA/SDTG: ftDev == null", Toast.LENGTH_SHORT).show();
         }
-        //       } catch (NullPointerException npe) {
-        //        Toast.makeText(deviceContext, npe.getMessage(), Toast.LENGTH_SHORT).show();}
     }
 
     public void setFtDev(FT_Device ftDev) {
         this.ftDev = ftDev;
     }
-
 
     public static Context getAppContext() {
         return MenuActivity.context;
