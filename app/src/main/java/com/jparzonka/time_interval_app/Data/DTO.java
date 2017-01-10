@@ -2,10 +2,9 @@ package com.jparzonka.time_interval_app.data;
 
 import android.util.Log;
 
-import com.jparzonka.time_interval_app.MenuActivity;
+import com.jparzonka.time_interval_app.SendDataActivity;
 import com.jparzonka.time_interval_app.fragments.FrequencyTriggerSectionFragment;
 import com.jparzonka.time_interval_app.fragments.PeriodTriggerSectionFragment;
-import com.jparzonka.time_interval_app.fragments.SendDataFragment;
 import com.jparzonka.time_interval_app.fragments.TimeIntervalModeFragment;
 
 /**
@@ -31,11 +30,11 @@ public class DTO {
     private double totalValueOfTimeIntervals, totalValueOfTrigger;
 
     public DTO() throws NullPointerException {
-        SendDataFragment sdf = MenuActivity.getSendDataFragment();
+        SendDataActivity sdf = new SendDataActivity();
         setSelectedMode(sdf.getSelectedMode());
-        setExternalClockSelected(SendDataFragment.getExternalClockSelected());
+        setExternalClockSelected(SendDataActivity.getExternalClockSelected());
 
-        TimeIntervalModeFragment timf = SendDataFragment.getTimeIntervalModeFragment();
+        TimeIntervalModeFragment timf = SendDataActivity.getTimeIntervalModeFragment();
         setSecondsTimeIntervals(timf.getsTI());
         setMilisecondsTimeIntervals(timf.getMsTI() / 1.0E+3);
         setMicrosecondsTimeIntervals(timf.getMicrosTI() / 1.0E+6);
@@ -77,24 +76,26 @@ public class DTO {
         setHasSignal_A_InvertedPolarization(sdf.hasSignal_A_InvertedPolarization());
         setHasSignal_B_InvertedPolarization(sdf.hasSignal_B_InvertedPolarization());
         setHasSignal_CW_InvertedPolarization(sdf.hasSignal_CW_InvertedPolarization());
+
+        System.out.println(toString());
     }
 
     private double calculateTotalValueOfTimeIntervalsADouble() {
         double s = getSecondsTimeIntervals(), ms = getMilisecondsTimeIntervals(), micro = getMicrosecondsTimeIntervals(),
                 ns = getNanosecondsTimeIntervals(), ps = getPicosecondsTimeIntervals();
-        Log.i("DTO/s", String.valueOf(s));
-        Log.i("DTO/ms", String.valueOf(ms));
-        Log.i("DTO/micros", String.valueOf(micro));
-        Log.i("DTO/ns", String.valueOf(ns));
-        Log.i("DTO/ps", String.valueOf(ps));
+//        Log.i("DTO/s", String.valueOf(s));
+//        Log.i("DTO/ms", String.valueOf(ms));
+//        Log.i("DTO/micros", String.valueOf(micro));
+//        Log.i("DTO/ns", String.valueOf(ns));
+//        Log.i("DTO/ps", String.valueOf(ps));
         return s + ms + micro + ns + ps;
     }
 
     private double calculateTotalValueOfFreqencyTriggerADouble() {
         double kHz = getkHzTrigger(), Hz = getHzTrigger(), mHz = getmHzTrigger();
-        Log.i("DTO/kHz", String.valueOf(kHz));
-        Log.i("DTO/Hz", String.valueOf(Hz));
-        Log.i("DTO/mHz", String.valueOf(mHz));
+//        Log.i("DTO/kHz", String.valueOf(kHz));
+//        Log.i("DTO/Hz", String.valueOf(Hz));
+//        Log.i("DTO/mHz", String.valueOf(mHz));
         return kHz + Hz + mHz;
     }
 

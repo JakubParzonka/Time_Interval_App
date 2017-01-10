@@ -26,7 +26,6 @@ import com.jparzonka.mylibrary.j2xx.D2xxManager;
 import com.jparzonka.mylibrary.j2xx.FT_Device;
 import com.jparzonka.time_interval_app.fragments.InfoPanelFragment;
 import com.jparzonka.time_interval_app.fragments.IntroduceFragment;
-import com.jparzonka.time_interval_app.fragments.SendDataFragment;
 import com.jparzonka.time_interval_app.log_handler.LogHandler;
 import com.jparzonka.time_interval_app.navigation_drawer.NavigationDrawerFragment;
 import com.jparzonka.time_interval_app.sending_hanlder.ConnectionHandler;
@@ -46,7 +45,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private static final String SERIAL_NUMBER = "FTS9MKOJ";
-    private static SendDataFragment sendDataFragment;
+    private static SendDataActivity sendDataActivity;
     private static ConnectionHandler connectionHandler;
     private static D2xxManager d2xxManager = null;
     private static Context context;
@@ -137,7 +136,6 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         Toast.makeText(this, "MA: device info list " + String.valueOf(i), Toast.LENGTH_SHORT);
 
         int devCount = deviceList.size();
-        SendDataFragment.setParameters(getApplicationContext(), d2xxManager);
         if (devCount > 0) {
             Toast.makeText(this, "MA: devCount > 0", Toast.LENGTH_SHORT).show();
             ftDev = new FT_Device(this, mUsbManager, usbDeviceT5300, intf);
@@ -193,8 +191,8 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         if (position == 0) {
-            sendDataFragment = new SendDataFragment(ftDev);
-            fragmentTransaction.replace(android.R.id.content, sendDataFragment).commit();
+//            sendDataActivity = new SendDataActivity(ftDev);
+//            fragmentTransaction.replace(android.R.id.content, sendDataActivity).commit();
         } else if (position == 1) {
             try {
                 InfoPanelFragment infoPanelFragment = new InfoPanelFragment(getApplicationContext(), d2xxManager);
@@ -274,8 +272,8 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
         }
     }
 
-    public static SendDataFragment getSendDataFragment() {
-        return sendDataFragment;
+    public static SendDataActivity getSendDataActivity() {
+        return sendDataActivity;
     }
 
     public static D2xxManager getd2xxManager() {
@@ -305,9 +303,9 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
 
 
     public void sendDataToGenerator(byte[] outputData) {
-
-        if (outputData != null)
-            Toast.makeText(getAppContext(), "MA/SDTG: outputData size = " + outputData.length, Toast.LENGTH_SHORT).show();
+/*      if (outputData != null){
+            //  Toast.makeText(getAppContext(), "MA/SDTG: outputData size = " + outputData.length, Toast.LENGTH_SHORT).show();
+        }
         else {
             Toast.makeText(getAppContext(), "MA/SDTG: outputData is null", Toast.LENGTH_SHORT).show();
             return;
@@ -315,18 +313,18 @@ public class MenuActivity extends AppCompatActivity implements NavigationDrawerF
 
         try {
             if (ftDev.isOpen()) {
-                Toast.makeText(getAppContext(), "MA/SDTG: open device port OK", Toast.LENGTH_SHORT).show();
+          //      Toast.makeText(getAppContext(), "MA/SDTG: open device port OK", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getAppContext(), "device not open", Toast.LENGTH_SHORT).show();
                 Log.e("j2xx", "SendMessage: device not open");
             }
         } catch (NullPointerException e) {
             Toast.makeText(getAppContext(), "MA/SDTG: isOpen() throws null :/", Toast.LENGTH_SHORT).show();
-        }
+        }*/
         try {
-            ftDev.setLatencyTimer((byte) 16);
+            // ftDev.setLatencyTimer((byte) 16);
             int result = ftDev.write(outputData);
-            Toast.makeText(getAppContext(), "MA/SDTG: WRITE: " + result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getAppContext(), "MA/SDTG:Data bytes: " + result, Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
             Toast.makeText(getAppContext(), "MA/SDTG: ftDev == null", Toast.LENGTH_SHORT).show();
         }

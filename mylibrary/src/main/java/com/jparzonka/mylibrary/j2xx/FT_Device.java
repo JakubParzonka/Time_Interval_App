@@ -475,11 +475,13 @@ public class FT_Device {
         if (wait) {
             request.setClientData(obj);
         }
+        boolean r = request.queue(ByteBuffer.wrap(data), length);
+
         if (length == 0) {
             if (request.queue(ByteBuffer.wrap(new byte[1]), length)) {
                 rc = length;
             }
-        } else if (request.queue(ByteBuffer.wrap(data), length)) {
+        } else if (r) {
             rc = length;
         }
         if (wait) {
