@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jparzonka.time_interval_app">
 
     <uses-feature android:name="android.hardware.usb.host" />
@@ -19,8 +20,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <!--<activity-->
+            <!--android:name="."-->
+            <!--android:parentActivityName=".OpenDeviceActivity" />-->
     </application>
 
 </manifest>

@@ -1,9 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Frequency"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/frequency_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <RadioGroup
+            android:id="@+id/frequency_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_button_10"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:text="@string/_10_mhz"
+                android:textAlignment="viewEnd" />
+
+            <RadioButton
+                android:id="@+id/radio_button_25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_25_mhz" />
+
+            <RadioButton
+                android:id="@+id/radio_button_50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_50_mhz" />
+
+            <RadioButton
+                android:id="@+id/radio_button_75"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_75_mhz" />
+
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/period_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <RadioGroup
+            android:id="@+id/period_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_button_period_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_10" />
+
+            <RadioButton
+                android:id="@+id/radio_button_period_100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_100" />
+
+            <RadioButton
+                android:id="@+id/radio_button_period_1000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_1000" />
+
+            <RadioButton
+                android:id="@+id/radio_button_period_10000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_10000" />
+
+
+        </RadioGroup>
+    </LinearLayout>
 </LinearLayout>

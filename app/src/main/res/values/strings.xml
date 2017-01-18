@@ -24,4 +24,14 @@
     <string name="output_b">Output B</string>
     <string name="output_cw">Output CW</string>
     <string name="reset">Reset</string>
+    <string name="open_device">Open device</string>
+    <string name="connected_device">Connected device:</string>
+    <string name="_75_mhz">75 MHz</string>
+    <string name="_50_mhz">50 MHz</string>
+    <string name="_25_mhz">25 MHz</string>
+    <string name="_10_mhz">10 MHz</string>
+    <string name="_10">10</string>
+    <string name="_100">100</string>
+    <string name="_10000">10000</string>
+    <string name="_1000">1000</string>
 </resources>

@@ -8,6 +8,7 @@ import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbRequest;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.jparzonka.mylibrary.j2xx.D2xxManager.D2xxException;
 import com.jparzonka.mylibrary.j2xx.D2xxManager.DriverParameters;
@@ -18,6 +19,8 @@ import com.jparzonka.mylibrary.j2xx.ft4222.FT_4222_Defines.SPI_SLAVE_CMD;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+//import android.widget.Toast;
 
 public class FT_Device {
     private static final String TAG = "FTDI_Device::";
@@ -347,25 +350,32 @@ public class FT_Device {
     }
 
     synchronized boolean openDevice(UsbManager usbManager) {
-        int rc = 0;
+        boolean rc = false;
         if (isOpen()) {
-            rc = 0;
+            rc = false;
+//            Toast.makeText(mContext, "FT openDevice, device is open", Toast.LENGTH_SHORT).show();
         } else if (usbManager == null) {
+//            Toast.makeText(mContext, "FT openDevice, usbManager == null", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "UsbManager cannot be null.");
-            rc = 0;
+            rc = false;
         } else if (getConnection() != null) {
+//            Toast.makeText(mContext, "FT openDevice, getConnection() != nul", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "There should not have an UsbConnection.");
-            rc = 0;
+            rc = false;
         } else {
+//            Toast.makeText(mContext, "FT openDevice, not open", Toast.LENGTH_SHORT).show();
             setConnection(usbManager.openDevice(this.mUsbDevice));
             if (getConnection() == null) {
+//                Toast.makeText(mContext, "FT openDevice, UsbConnection cannot be null.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "UsbConnection cannot be null.");
-                rc = 0;
+                rc = false;
             } else if (getConnection().claimInterface(this.mUsbInterface, true)) {
                 Log.d(TAG, "open SUCCESS");
+//                Toast.makeText(mContext, "FT openDevice, open SUCCESS", Toast.LENGTH_SHORT).show();
                 if (findDeviceEndpoints()) {
                     this.mUsbRequest.initialize(this.mUsbConnection, this.mBulkOutEndpoint);
                     Log.d("D2XX::", "**********************Device Opened**********************");
+//                    Toast.makeText(mContext, "FT openDevice, *Device Opened*", Toast.LENGTH_SHORT).show();
                     this.mProcessInCtrl = new ProcessInCtrl(this);
                     this.mBulkIn = new BulkInWorker(this, this.mProcessInCtrl, getConnection(), this.mBulkInEndpoint);
                     this.mBulkInThread = new Thread(this.mBulkIn);
@@ -377,18 +387,21 @@ public class FT_Device {
                     this.mProcessRequestThread.start();
                     setOpen();
                     //rc = Integer.getInteger(String.valueOf(true);
-                    rc = 1;
+                    rc = true;
+//                    Toast.makeText(mContext, "FT openDevice, result:" + rc, Toast.LENGTH_SHORT).show();
 
                 } else {
                     Log.e(TAG, "Failed to find endpoints.");
-                    rc = 0;
+//                    Toast.makeText(mContext, "FT openDevice, Failed to find endpoints.", Toast.LENGTH_SHORT).show();
+                    rc = false;
                 }
             } else {
                 Log.e(TAG, "ClaimInteface returned false.");
-                rc = 0;
+//                Toast.makeText(mContext, "FT openDevice, ClaimInteface returned false.", Toast.LENGTH_SHORT).show();
+                rc = false;
             }
         }
-        return Boolean.valueOf(String.valueOf(rc));
+        return rc;
     }
 
     public synchronized boolean isOpen() throws NullPointerException {
@@ -476,10 +489,11 @@ public class FT_Device {
             request.setClientData(obj);
         }
         boolean r = request.queue(ByteBuffer.wrap(data), length);
-
+        Toast.makeText(mContext, "FT write request.queue(): " + r, Toast.LENGTH_SHORT).show();
         if (length == 0) {
             if (request.queue(ByteBuffer.wrap(new byte[1]), length)) {
                 rc = length;
+                Toast.makeText(mContext, "FT write data.length = 0" + r, Toast.LENGTH_SHORT).show();
             }
         } else if (r) {
             rc = length;
@@ -552,7 +566,7 @@ public class FT_Device {
         int[] divisors = new int[2];
         boolean boolresult = false;
         if (!isOpen()) {
-            return Boolean.valueOf(String.valueOf(0));
+            return false;
         }
         switch (baudRate) {
             case 300:
@@ -981,20 +995,24 @@ public class FT_Device {
 
     private boolean findDeviceEndpoints() {
         for (int i = 0; i < this.mUsbInterface.getEndpointCount(); i++) {
-            Log.i(TAG, "EP: " + String.format("0x%02X", new Object[]{Integer.valueOf(this.mUsbInterface.getEndpoint(i).getAddress())}));
+            Toast.makeText(mContext, "FT findDeviceEndpoints number: " + i, Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "EP: " + String.format("0x%02X", this.mUsbInterface.getEndpoint(i).getAddress()));
+            Toast.makeText(mContext, "FT findDeviceEndpoints: " + String.format("0x%02X", this.mUsbInterface.getEndpoint(i).getAddress()), Toast.LENGTH_SHORT).show();
             if (this.mUsbInterface.getEndpoint(i).getType() != 2) {
                 Log.i(TAG, "Not Bulk Endpoint");
+                Toast.makeText(mContext, "FT findDeviceEndpoints if", Toast.LENGTH_SHORT).show();
             } else if (this.mUsbInterface.getEndpoint(i).getDirection() == SPI_SLAVE_CMD.SPI_MASTER_TRANSFER) {
+                Toast.makeText(mContext, "FT findDeviceEndpoints else if", Toast.LENGTH_SHORT).show();
                 this.mBulkInEndpoint = this.mUsbInterface.getEndpoint(i);
                 this.mMaxPacketSize = this.mBulkInEndpoint.getMaxPacketSize();
             } else {
+                Toast.makeText(mContext, "FT findDeviceEndpoints else + i: " + i, Toast.LENGTH_SHORT).show();
                 this.mBulkOutEndpoint = this.mUsbInterface.getEndpoint(i);
             }
         }
-        if (this.mBulkOutEndpoint == null || this.mBulkInEndpoint == null) {
-            return false;
-        }
-        return true;
+        boolean result = !(this.mBulkOutEndpoint == null || this.mBulkInEndpoint == null);
+        Toast.makeText(mContext, "FT findDeviceEndpoints result: " + result, Toast.LENGTH_SHORT).show();
+        return result;
     }
 
     public FT_EEPROM eepromRead() {

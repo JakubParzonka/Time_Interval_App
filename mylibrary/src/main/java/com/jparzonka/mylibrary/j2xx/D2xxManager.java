@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -435,9 +436,11 @@ public class D2xxManager {
     public boolean tryOpen(Context parentContext, FT_Device ftDev, DriverParameters params) {
         boolean rc = false;
         if (ftDev == null) {
+            //  Toast.makeText(parentContext, "tryOpen passed ftDev == null", Toast.LENGTH_SHORT).show();
             return Boolean.getBoolean(String.valueOf(FT_DEVICE_232B));
         }
         if (parentContext == null) {
+            //    Toast.makeText(parentContext, "tryOpen passed context == null", Toast.LENGTH_SHORT).show();
             return Boolean.getBoolean(String.valueOf(FT_DEVICE_232B));
         }
         ftDev.setContext(parentContext);
@@ -445,7 +448,11 @@ public class D2xxManager {
             ftDev.setDriverParameters(params);
         }
         if (ftDev.openDevice(mUsbManager) && ftDev.isOpen()) {
+            //         Toast.makeText(parentContext, "tryOpen ftDev.openDevice = TRUE", Toast.LENGTH_SHORT).show();
             rc = true;
+        } else {
+            //     Toast.makeText(parentContext, "tryOpen ftDev.openDevice = FALSE", Toast.LENGTH_SHORT).show();
+
         }
         return rc;
     }
@@ -456,6 +463,7 @@ public class D2xxManager {
         if (isFtDevice(dev)) {
             ftDev = findDevice(dev);
             if (!tryOpen(parentContext, ftDev, params)) {
+                Toast.makeText(parentContext, "openByUsbDevice tryOpen failed!", Toast.LENGTH_SHORT).show();
                 ftDev = null;
             }
         }
@@ -474,8 +482,9 @@ public class D2xxManager {
             ftDev = null;
         } else {
             updateContext(parentContext);
-            FT_Device ftDev2 = (FT_Device) this.mFtdiDevices.get(index);
+            FT_Device ftDev2 = this.mFtdiDevices.get(index);
             if (!tryOpen(parentContext, ftDev2, params)) {
+                // Toast.makeText(parentContext, "openByIndex tryOpen failed!", Toast.LENGTH_SHORT).show();
                 ftDev2 = null;
             }
             ftDev = ftDev2;

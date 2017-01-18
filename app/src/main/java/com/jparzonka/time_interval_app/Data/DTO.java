@@ -1,20 +1,27 @@
 package com.jparzonka.time_interval_app.data;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.jparzonka.time_interval_app.SendDataActivity;
+import com.jparzonka.time_interval_app.fragments.FrequencyModeFragment;
 import com.jparzonka.time_interval_app.fragments.FrequencyTriggerSectionFragment;
 import com.jparzonka.time_interval_app.fragments.PeriodTriggerSectionFragment;
 import com.jparzonka.time_interval_app.fragments.TimeIntervalModeFragment;
+
+import java.util.Objects;
 
 /**
  * Created by Jakub on 2016-12-26.
  */
 
 public class DTO {
+    private static String TIME_INTERVALS = "TI";
+    private static String FREQUENCY = "F";
 
     private String selectedMode;
-    private static boolean isExternalClockSelected;
+    private boolean isExternalClockSelected;
     private double secondsTimeIntervals;
     private double milisecondsTimeIntervals;
     private double microsecondsTimeIntervals;
@@ -28,56 +35,85 @@ public class DTO {
     private double OCT, DAC;
     private boolean hasSignal_A_InvertedPolarization, hasSignal_B_InvertedPolarization, hasSignal_CW_InvertedPolarization;
     private double totalValueOfTimeIntervals, totalValueOfTrigger;
+    private double freqencyInMhz;
+    private int frequencyPeriod;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public DTO() throws NullPointerException {
+/*        selectedMode = "";
+        isExternalClockSelected = false;
+        secondsTimeIntervals = 0;
+        milisecondsTimeIntervals = 0;
+        microsecondsTimeIntervals = 0;
+        nanosecondsTimeIntervals = 0;
+        picosecondsTimeIntervals = 0;
+        outputWidth = 0;
+        isPeriodTriggerSectionSelected = false;
+        khzTrigger = 0;
+        hzTrigger = 0;
+        mhzTrigger = 0;
+        OCT = 0;
+        DAC = 0;
+        hasSignal_A_InvertedPolarization = false;
+        hasSignal_B_InvertedPolarization = false;
+        hasSignal_CW_InvertedPolarization = false;
+        totalValueOfTimeIntervals = 0;
+        totalValueOfTrigger = 0;
+        freqencyInMhz = 0;*/
         SendDataActivity sdf = new SendDataActivity();
-        setSelectedMode(sdf.getSelectedMode());
+        setSelectedMode(SendDataActivity.getSelectedMode());
         setExternalClockSelected(SendDataActivity.getExternalClockSelected());
+        if (Objects.equals(SendDataActivity.getSelectedMode(), TIME_INTERVALS)) {
 
-        TimeIntervalModeFragment timf = SendDataActivity.getTimeIntervalModeFragment();
-        setSecondsTimeIntervals(timf.getsTI());
-        setMilisecondsTimeIntervals(timf.getMsTI() / 1.0E+3);
-        setMicrosecondsTimeIntervals(timf.getMicrosTI() / 1.0E+6);
-        setNanosecondsTimeIntervals(timf.getNsTI() / 1.0E+9);
-        setPicosecondsTimeIntervals(timf.getPsTI() / 1.0E+12);
-        setOutputWidth(timf.getOutputWidth());
+            TimeIntervalModeFragment timf = SendDataActivity.getTimeIntervalModeFragment();
+            setSecondsTimeIntervals(timf.getsTI());
+            setMilisecondsTimeIntervals(timf.getMsTI() / 1.0E+3);
+            setMicrosecondsTimeIntervals(timf.getMicrosTI() / 1.0E+6);
+            setNanosecondsTimeIntervals(timf.getNsTI() / 1.0E+9);
+            setPicosecondsTimeIntervals(timf.getPsTI() / 1.0E+12);
+            setOutputWidth(TimeIntervalModeFragment.getOutputWidth());
 
-        setIsPeriodTriggerSectionSelected(TimeIntervalModeFragment.getPeriodTriggerSectionSelected());
-        Log.i("DTO", "isPeriodTriggerSectionSelected: " + String.valueOf(isPeriodTriggerSectionSelected()));
-        if (isPeriodTriggerSectionSelected) {
-            PeriodTriggerSectionFragment ptsf = TimeIntervalModeFragment.getPeriodTriggerSectionFragment();
-            double s = ptsf.getSecondPTS(), ms = ptsf.getMilisecondPTS() / 1.0E+3, micros = ptsf.getMicrosecondsPTS() / 1.0E+6;
-            Log.i("DTO/konstruktor", "s: " + String.valueOf(s));
-            Log.i("DTO/konstruktor", "ms: " + String.valueOf(ms));
-            Log.i("DTO/konstruktor", "micros: " + String.valueOf(micros));
+            setIsPeriodTriggerSectionSelected(TimeIntervalModeFragment.getPeriodTriggerSectionSelected());
+            Log.i("DTO", "isPeriodTriggerSectionSelected: " + String.valueOf(isPeriodTriggerSectionSelected()));
+            if (isPeriodTriggerSectionSelected) {
+                PeriodTriggerSectionFragment ptsf = TimeIntervalModeFragment.getPeriodTriggerSectionFragment();
+                double s = ptsf.getSecondPTS(), ms = ptsf.getMilisecondPTS() / 1.0E+3, micros = ptsf.getMicrosecondsPTS() / 1.0E+6;
+                Log.i("DTO/konstruktor", "s: " + String.valueOf(s));
+                Log.i("DTO/konstruktor", "ms: " + String.valueOf(ms));
+                Log.i("DTO/konstruktor", "micros: " + String.valueOf(micros));
 
-            if (s == 0) setkHzTrigger(0);
-            else setkHzTrigger(1 / s);
+                if (s == 0) setkHzTrigger(0);
+                else setkHzTrigger(1 / s);
 
-            if (ms == 0) setHzTrigger(0);
-            else setHzTrigger(1 / ms);
+                if (ms == 0) setHzTrigger(0);
+                else setHzTrigger(1 / ms);
 
-            if (micros == 0) setmHzTrigger(0);
-            else setmHzTrigger(1 / micros);
+                if (micros == 0) setmHzTrigger(0);
+                else setmHzTrigger(1 / micros);
 
-        } else {
-            FrequencyTriggerSectionFragment ftsf = TimeIntervalModeFragment.getFrequencyTriggerSectionFragment();
-            setkHzTrigger(ftsf.getkHzFTS());
-            setHzTrigger(ftsf.getHzFTS());
-            setmHzTrigger(ftsf.getmHzFTS());
+            } else {
+                FrequencyTriggerSectionFragment ftsf = TimeIntervalModeFragment.getFrequencyTriggerSectionFragment();
+                  setkHzTrigger(ftsf.getkHzFTS());
+                setHzTrigger(ftsf.getHzFTS());
+                setmHzTrigger(ftsf.getmHzFTS());
+            }
+
+            setTotalValueOfTimeIntervals(calculateTotalValueOfTimeIntervalsADouble());
+            setTotalValueOfTrigger(calculateTotalValueOfFreqencyTriggerADouble());
+
+            setOCT();
+            setDAC();
+
+            setHasSignal_A_InvertedPolarization(timf.hasSignal_A_InvertedPolarization());
+            setHasSignal_B_InvertedPolarization(timf.hasSignal_B_InvertedPolarization());
+            setHasSignal_CW_InvertedPolarization(timf.hasSignal_CW_InvertedPolarization());
+        } else if (Objects.equals(SendDataActivity.getSelectedMode(), FREQUENCY)) {
+            FrequencyModeFragment fmf = SendDataActivity.getFrequencyModeFragment();
+            setFreqencyInMhz(fmf.getFrequencyInMHz());
+            setFrequencyPeriod(fmf.getPeriod());
         }
 
-        setTotalValueOfTimeIntervals(calculateTotalValueOfTimeIntervalsADouble());
-        setTotalValueOfTrigger(calculateTotalValueOfFreqencyTriggerADouble());
 
-        setOCT();
-        setDAC();
-
-        setHasSignal_A_InvertedPolarization(sdf.hasSignal_A_InvertedPolarization());
-        setHasSignal_B_InvertedPolarization(sdf.hasSignal_B_InvertedPolarization());
-        setHasSignal_CW_InvertedPolarization(sdf.hasSignal_CW_InvertedPolarization());
-
-        System.out.println(toString());
     }
 
     private double calculateTotalValueOfTimeIntervalsADouble() {
@@ -103,6 +139,7 @@ public class DTO {
     public String toString() {
         return "DTO{" +
                 "selectedMode='" + selectedMode + '\'' +
+                ", isExternalClockSelected=" + isExternalClockSelected +
                 ", secondsTimeIntervals=" + secondsTimeIntervals +
                 ", milisecondsTimeIntervals=" + milisecondsTimeIntervals +
                 ", microsecondsTimeIntervals=" + microsecondsTimeIntervals +
@@ -119,6 +156,8 @@ public class DTO {
                 ", hasSignal_CW_InvertedPolarization=" + hasSignal_CW_InvertedPolarization +
                 ", totalValueOfTimeIntervals=" + totalValueOfTimeIntervals +
                 ", totalValueOfTrigger=" + totalValueOfTrigger +
+                ", freqencyInMhz=" + freqencyInMhz +
+                ", frequencyPeriod=" + frequencyPeriod +
                 '}';
     }
 
@@ -134,7 +173,7 @@ public class DTO {
         return isExternalClockSelected;
     }
 
-    public static void setExternalClockSelected(boolean externalClockSelected) {
+    public void setExternalClockSelected(boolean externalClockSelected) {
         isExternalClockSelected = externalClockSelected;
     }
 
@@ -242,8 +281,10 @@ public class DTO {
 
     public void setOCT() {
         double f = getTotalValueOfFrequencyTrigger();
-        OCT = 3.322 * Math.log10(f / 1039);
-        Log.i("DTO/OCT", String.valueOf(OCT));
+        if (f != 0) {
+            OCT = 3.322 * Math.log10(f / 1039);
+            Log.i("DTO/OCT", String.valueOf(OCT));
+        }
     }
 
     public double getDAC() {
@@ -252,8 +293,10 @@ public class DTO {
 
     public void setDAC() {
         double f = getTotalValueOfFrequencyTrigger();
-        DAC = 2048 - ((2078 * Math.pow(2, 10 + getOCT())) / f);
-        Log.i("DTO/DAC", String.valueOf(DAC));
+        if (f != 0) {
+            DAC = 2048 - ((2078 * Math.pow(2, 10 + getOCT())) / f);
+            Log.i("DTO/DAC", String.valueOf(DAC));
+        }
     }
 
     public boolean isHasSignal_A_InvertedPolarization() {
@@ -278,5 +321,21 @@ public class DTO {
 
     public void setHasSignal_CW_InvertedPolarization(boolean hasSignal_CW_InvertedPolarization) {
         this.hasSignal_CW_InvertedPolarization = hasSignal_CW_InvertedPolarization;
+    }
+
+    public double getFreqencyInMhz() {
+        return freqencyInMhz;
+    }
+
+    public void setFreqencyInMhz(double freqencyInMhz) {
+        this.freqencyInMhz = freqencyInMhz;
+    }
+
+    public int getFrequencyPeriod() {
+        return frequencyPeriod;
+    }
+
+    public void setFrequencyPeriod(int frequencyPeriod) {
+        this.frequencyPeriod = frequencyPeriod;
     }
 }

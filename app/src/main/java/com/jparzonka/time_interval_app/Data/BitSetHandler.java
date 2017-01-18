@@ -2,6 +2,7 @@ package com.jparzonka.time_interval_app.data;
 
 import android.util.Log;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.BitSet;
@@ -107,7 +108,7 @@ public class BitSetHandler {
 //            System.out.println("  QW_" + a);
 //        }
 //        return Convert.toByteArray(data);
-        byte[] data = Convert.hexStringToByteArray("00000020");
+        byte[] data = Convert.hexStringToByteArray("20000000");
         Log.i("BitSetHandler", "getSET_S_DataArray!");
         for (byte b : data) {
             System.out.println(b + " ");
@@ -149,7 +150,7 @@ public class BitSetHandler {
         data.set(20, 40, false);
         Log.i("BitSetHandler", "TRIG_DIV: " + data.toString());
 */
-        byte[] data = {0x00, 0x00, 0x69, (byte) 0xBE};
+        byte[] data = {(byte) 0xBE, 0x69, 0x00, 0x00};
         //Convert.hexStringToByteArray("000069BE");
         Log.i("BitSetHandler", "getSET_TRIG_DataArray!");
         for (byte b : data) {
@@ -159,7 +160,8 @@ public class BitSetHandler {
     }
 
     public byte[] getTRIG_DIV_Address() {
-        byte[] address = Convert.hexStringToByteArray(CommandAddresses.SET_TRIG.getAddress());
+        byte[] address = new BigInteger(CommandAddresses.TIRG_DIV.getAddress(), 16).toByteArray();
+        // Convert.hexStringToByteArray(CommandAddresses.TIRG_DIV.getAddress());
         Log.i("BitSetHandler", "getTRIG_DIV_Address!");
         for (byte b : address) {
             System.out.println(b + " ");
@@ -191,13 +193,13 @@ public class BitSetHandler {
         }
         data.set(20, 40, false);
         Log.i("BitSetHandler", "TRIG_DIV: " + data.toString());*/
-        byte[] data = Convert.hexStringToByteArray("00000002");
+        byte[] data = {0x01, 0x00, 0x00, 0x00};
+        //Convert.hexStringToByteArray("01000000");
         Log.i("BitSetHandler", "getTRIG_DIV_DataArray!");
         for (byte b : data) {
             System.out.println(b + " ");
         }
         return data;
-
     }
 
     public byte[] getSYNTH_N_Address() {
@@ -228,7 +230,7 @@ public class BitSetHandler {
     }
 
     public byte[] getADF4360_LOAD_R_COUNTER_LATCH_DataArray() {
-        byte[] data = Convert.hexStringToByteArray("00340005");
+        byte[] data = Convert.hexStringToByteArray("05003400");
         Log.i("BitSetHandler", "getADF4360_LOAD_R_COUNTER_LATCH_DataArray!");
         for (byte b : data) {
             System.out.println(b + " ");
@@ -237,7 +239,7 @@ public class BitSetHandler {
     }
 
     public byte[] getADF4360_LOAD_CONTROL_LATCH_DataArray() {
-        byte[] data = Convert.hexStringToByteArray("000E35E4");
+        byte[] data = Convert.hexStringToByteArray("E4350E00");
         Log.i("BitSetHandler", "getADF4360_LOAD_CONTROL_LATCH_DataArray!");
         for (byte b : data) {
             System.out.println(b + " " + 0xE4 + " ");
@@ -246,7 +248,7 @@ public class BitSetHandler {
     }
 
     public byte[] getADF4360_LOAD_N_COUNTER_LATCH_DataArray() {
-        byte[] data = Convert.hexStringToByteArray("0000230A");
+        byte[] data = Convert.hexStringToByteArray("0A230000");
         Log.i("BitSetHandler", "getADF4360_LOAD_N_COUNTER_LATCH_DataArray!");
         for (byte b : data) {
             System.out.println(b + " ");
@@ -282,7 +284,7 @@ public class BitSetHandler {
     }
 
     public byte[] getCFR1_DataArray() {
-        byte[] data = Convert.hexStringToByteArray("00340005");
+        byte[] data = Convert.hexStringToByteArray("42000000");
         Log.i("BitSetHandler", "getCFR1_DataArray!");
         for (byte b : data) {
             System.out.println(b + " ");
@@ -300,7 +302,7 @@ public class BitSetHandler {
     }
 
     public byte[] getFTW0_DataArray() {
-        byte[] data = Convert.hexStringToByteArray("3EBB2B3E");
+        byte[] data = Convert.hexStringToByteArray("3E2BEB3B");
         Log.i("BitSetHandler", "getFTW0_DataArray!");
         for (byte b : data) {
             System.out.println(b + " ");

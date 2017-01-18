@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class TimeIntervalModeFragment extends Fragment {
     private static double outputWidth = 0;
     private static FrequencyTriggerSectionFragment frequencyTriggerSectionFragment;
     private static PeriodTriggerSectionFragment periodTriggerSectionFragment;
+    private static CheckBox checkBoxA, checkBoxB, checkBoxCW;
 
     private static boolean isPeriodTriggerSectionSelected;
 
@@ -112,6 +114,10 @@ public class TimeIntervalModeFragment extends Fragment {
                 }
             }
         });
+
+        checkBoxA = (CheckBox) view.findViewById(R.id.signal_A_polarization);
+        checkBoxB = (CheckBox) view.findViewById(R.id.signal_B_polarization);
+        checkBoxCW = (CheckBox) view.findViewById(R.id.signal_CW_polarization);
         return view;
     }
 
@@ -170,4 +176,15 @@ public class TimeIntervalModeFragment extends Fragment {
         return periodTriggerSectionFragment;
     }
 
+    public boolean hasSignal_A_InvertedPolarization() {
+        return checkBoxA.isChecked();
+    }
+
+    public boolean hasSignal_B_InvertedPolarization() {
+        return checkBoxB.isChecked();
+    }
+
+    public boolean hasSignal_CW_InvertedPolarization() {
+        return checkBoxCW.isChecked();
+    }
 }
