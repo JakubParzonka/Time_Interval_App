@@ -89,6 +89,7 @@ public class SendDataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dto = new DTO();
                 Log.i("Data", dto.toString());
+                Toast.makeText(v.getContext(), dto.toString(), Toast.LENGTH_LONG).show();
                 //    if(dto.)
                 handleSending(dto);
             }

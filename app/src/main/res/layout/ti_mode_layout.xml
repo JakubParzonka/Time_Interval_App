@@ -4,227 +4,99 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/seconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:inputType="number"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                android:text="10" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text=" s" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/miliseconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:inputType="number"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                android:text="20" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="ms" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/microseconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:inputType="number"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                android:text="30" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="μs" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/nanoseconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:inputType="number"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                android:text="40" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="ns" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/picoseconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:inputType="number"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                android:text="50" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="ps" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/output_width_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
+        android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/output_width_radio_group"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/ten_radio_button"
+            <TextView
+                android:id="@+id/ti_spinner_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 ns" />
+                android:padding="10dp"
+                android:text="@string/time_intervals"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-            <RadioButton
-                android:id="@+id/twenty_radio_button"
+            <Spinner
+                android:id="@+id/time_interval_mode_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ow_spinner_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20 ns" />
+                android:paddingTop="10dp"
+                android:text="@string/output_width"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-            <RadioButton
-                android:id="@+id/fifty_radio_button"
+
+            <Spinner
+                android:id="@+id/output_width_spinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="50 ns" />
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-            <RadioButton
-                android:id="@+id/hundred_radio_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="100 ns" />
-
-        </RadioGroup>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/trigger"
+        android:textColor="#000000"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <RadioGroup
+            android:id="@+id/trigger_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/trigger_radio_group"
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/period_trigger_section_radio_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
+                android:layout_margin="5dp"
+                android:text="@string/period" />
 
-                <RadioButton
-                    android:id="@+id/period_trigger_section_radio_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/period" />
+            <RadioButton
+                android:id="@+id/frequency_trigger_section_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/frequency2" />
 
-                <RadioButton
-                    android:id="@+id/frequency_trigger_section_radio_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/frequency2" />
-
-            </RadioGroup>
-        </LinearLayout>
+        </RadioGroup>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp">
+            android:layout_marginLeft="15dp">
 
             <FrameLayout
                 android:id="@+id/trigger_section_frame_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-
         </LinearLayout>
 
 

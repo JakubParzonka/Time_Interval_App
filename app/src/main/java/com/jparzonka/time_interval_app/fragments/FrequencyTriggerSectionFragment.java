@@ -4,10 +4,11 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.jparzonka.time_interval_app.R;
 
@@ -17,57 +18,57 @@ import com.jparzonka.time_interval_app.R;
 
 public class FrequencyTriggerSectionFragment extends Fragment {
     private View view;
-    private EditText kHzFTS, hzFTS, mHzFTS;
-
+    private double frequencyTrigger = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_frequency_trigger_section_layout, container, false);
-        kHzFTS = (EditText) view.findViewById(R.id.khz_trigger_section);
-        hzFTS = (EditText) view.findViewById(R.id.hz_trigger_section);
-        mHzFTS = (EditText) view.findViewById(R.id.mhz_trigger_section);
 
-        kHzFTS.setOnTouchListener(new View.OnTouchListener() {
+        Spinner frequencySpinner = (Spinner) view.findViewById(R.id.frequency_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.frequency_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        frequencySpinner .setAdapter(adapter);
+        frequencySpinner .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                kHzFTS.setText("");
-                return false;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("TIMF/OW/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
+                setFrequencyTrigger(getFrequencyValueFromSpinner(parent.getItemAtPosition(position), position));
             }
-        });
-        hzFTS.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                hzFTS.setText("");
-                return false;
-            }
-        });
-        mHzFTS.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mHzFTS.setText("");
-                return false;
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         return view;
     }
 
-    public int getkHzFTS() {
-        int kHzFT = (Integer.parseInt(kHzFTS.getText().toString()));
-        Log.i("FTSF", "getkHzFTS: " + kHzFT);
-        return kHzFT;
+    private double getFrequencyValueFromSpinner(Object itemAtPosition, int position) {
+        double d;
+        switch (position) {
+            case 0:
+                d = 1;
+                break;
+            case 1:
+                d = 100;
+                break;
+            case 2:
+                d = 1000;
+                break;
+            default:
+                d = 0;
+        }
+        Log.i("FTSF/getFreqValue", String.valueOf(d));
+        return d;
     }
 
-    public int getHzFTS() {
-        int HzFT = (Integer.parseInt(hzFTS.getText().toString()));
-        Log.i("FTSF", "getHzFTS: " + HzFT);
-        return HzFT;
+
+    public double getFrequencyTrigger() {
+        return frequencyTrigger;
     }
 
-    public int getmHzFTS() {
-        int mHzFT = (Integer.parseInt(mHzFTS.getText().toString()));
-        Log.i("FTSF", "getmHzFTS: " + mHzFT);
-        return mHzFT;
+    public void setFrequencyTrigger(double frequencyTrigger) {
+        this.frequencyTrigger = frequencyTrigger;
     }
-
-
 }

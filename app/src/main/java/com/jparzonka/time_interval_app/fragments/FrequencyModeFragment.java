@@ -6,8 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.jparzonka.time_interval_app.R;
 
@@ -26,35 +27,88 @@ public class FrequencyModeFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frequency_mode_layout,
                 container, false);
-        RadioGroup frequencyRadioGroup = (RadioGroup) view.findViewById(R.id.frequency_radio_group);
-        frequencyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        Spinner frequencySpinner = (Spinner) view.findViewById(R.id.frequency_mode_spinner);
+        ArrayAdapter<CharSequence> fAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.frequency_mode_array, android.R.layout.simple_spinner_item);
+        fAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        frequencySpinner.setAdapter(fAdapter);
+        frequencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.radio_button_10) setFrequencyInMHz(10);
-                else if (checkedId == R.id.radio_button_25) setFrequencyInMHz(25);
-                else if (checkedId == R.id.radio_button_50) setFrequencyInMHz(50);
-                else if (checkedId == R.id.radio_button_75) setFrequencyInMHz(75);
-                else
-                    Toast.makeText(view.getContext(), "Non of frequency has been selected!", Toast.LENGTH_SHORT).show();
-                Log.i("FMT/checkedId", String.valueOf(checkedId));
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("FMF/F/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
+                setFrequencyInMHz(getFrequencyValueFromSpinner(parent.getItemAtPosition(position), position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
-        RadioGroup perdiodRadioGroup = (RadioGroup) view.findViewById(R.id.period_radio_group);
-        perdiodRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+        Spinner periodSpinner = (Spinner) view.findViewById(R.id.frequency_period_mode_spinner);
+        ArrayAdapter<CharSequence> tiAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.freqency_period_array, android.R.layout.simple_spinner_item);
+        tiAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        periodSpinner.setAdapter(tiAdapter);
+        periodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.radio_button_period_10) setPeriod(10);
-                else if (checkedId == R.id.radio_button_period_100) setPeriod(100);
-                else if (checkedId == R.id.radio_button_period_1000) setPeriod(1000);
-                else if (checkedId == R.id.radio_button_period_10000) setPeriod(10000);
-                else
-                    Toast.makeText(view.getContext(), "Non of frequency has been selected!", Toast.LENGTH_SHORT).show();
-                Log.i("FMT/checkedId", String.valueOf(checkedId));
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("FMF/FP/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
+                setFrequencyInMHz(getFrequencyPeriodCountFromSpinner(parent.getItemAtPosition(position), position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
 
         return view;
+    }
+
+    private double getFrequencyValueFromSpinner(Object itemAtPosition, int position) {
+        double d;
+        switch (position) {
+            case 0:
+                d = 10E+9;
+                break;
+            case 1:
+                d = 25E+9;
+                break;
+            case 2:
+                d = 50E+9;
+                break;
+            case 3:
+                d = 75E+9;
+                break;
+            default:
+                d = 0;
+        }
+        Log.i("FMF/getFMValue", String.valueOf(d));
+        return d;
+    }
+
+    private double getFrequencyPeriodCountFromSpinner(Object itemAtPosition, int position) {
+        double d;
+        switch (position) {
+            case 0:
+                d = 10;
+                break;
+            case 1:
+                d = 100;
+                break;
+            case 2:
+                d = 1000;
+                break;
+            case 3:
+                d = 10000;
+                break;
+            default:
+                d = 0;
+        }
+        Log.i("FMF/getFMPValue", String.valueOf(d));
+        return d;
     }
 
     public double getFrequencyInMHz() {

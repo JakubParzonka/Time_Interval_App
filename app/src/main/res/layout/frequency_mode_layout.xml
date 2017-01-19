@@ -8,83 +8,43 @@
         android:id="@+id/frequency_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
+        android:orientation="vertical">
 
-        <RadioGroup
-            android:id="@+id/frequency_radio_group"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/frequency_mode_spinner_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="10dp"
+            android:text="@string/frequency3"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
-            <RadioButton
-                android:id="@+id/radio_button_10"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+        <Spinner
+            android:id="@+id/frequency_mode_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-                android:text="@string/_10_mhz"
-                android:textAlignment="viewEnd" />
-
-            <RadioButton
-                android:id="@+id/radio_button_25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_25_mhz" />
-
-            <RadioButton
-                android:id="@+id/radio_button_50"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_50_mhz" />
-
-            <RadioButton
-                android:id="@+id/radio_button_75"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_75_mhz" />
-
-
-        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/period_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
+        android:orientation="vertical">
 
-        <RadioGroup
-            android:id="@+id/period_radio_group"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/frequency_period_spinner_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="10dp"
+            android:text="@string/periods"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
-            <RadioButton
-                android:id="@+id/radio_button_period_10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_10" />
+        <Spinner
+            android:id="@+id/frequency_period_mode_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <RadioButton
-                android:id="@+id/radio_button_period_100"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_100" />
-
-            <RadioButton
-                android:id="@+id/radio_button_period_1000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_1000" />
-
-            <RadioButton
-                android:id="@+id/radio_button_period_10000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_10000" />
-
-
-        </RadioGroup>
     </LinearLayout>
 </LinearLayout>

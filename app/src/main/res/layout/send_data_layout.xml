@@ -8,11 +8,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    <TextView
+        android:id="@+id/mode_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_mode"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
 
     <RelativeLayout
         android:id="@+id/mode_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/mode_text_view"
         android:orientation="horizontal">
 
         <RadioGroup
@@ -62,7 +71,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginTop="15dp"
-        android:padding="20dp"
+        android:padding="10dp"
         android:text="@string/reset" />
 
     <Button
@@ -73,6 +82,6 @@
         android:layout_gravity="bottom"
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/reset_button"
-        android:padding="20dp"
+        android:padding="10dp"
         android:text="@string/start" />
 </RelativeLayout>

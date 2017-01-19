@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.jparzonka.time_interval_app.R;
 
@@ -24,19 +24,19 @@ import com.jparzonka.time_interval_app.R;
 public class TimeIntervalModeFragment extends Fragment {
 
     private View view;
-    private EditText sTIEditText, msTIEditText, microsTIEditText, nsTIEditText, psTIEditText;
     private static double outputWidth = 0;
     private static FrequencyTriggerSectionFragment frequencyTriggerSectionFragment;
     private static PeriodTriggerSectionFragment periodTriggerSectionFragment;
     private static CheckBox checkBoxA, checkBoxB, checkBoxCW;
-
+    private double timeInterval;
     private static boolean isPeriodTriggerSectionSelected;
+    private boolean firstChecked = true;
+    private boolean secondChecked = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.ti_mode_layout, container, false);
 
-        sTIEditText = (EditText) view.findViewById(R.id.seconds);
 //        sTIEditText.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -44,51 +44,39 @@ public class TimeIntervalModeFragment extends Fragment {
 //                return false;
 //            }
 //        });
-        msTIEditText = (EditText) view.findViewById(R.id.miliseconds);
-        msTIEditText.setOnTouchListener(new View.OnTouchListener() {
+        Spinner tiSpinner = (Spinner) view.findViewById(R.id.time_interval_mode_spinner);
+        ArrayAdapter<CharSequence> tiAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.ti_mode_array, android.R.layout.simple_spinner_item);
+        tiAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tiSpinner.setAdapter(tiAdapter);
+        tiSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                msTIEditText.setText("");
-                return false;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("TIMF/TI/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
+                setTimeInterval(getTIValueFromSpinner(parent.getItemAtPosition(position), position));
             }
-        });
-        microsTIEditText = (EditText) view.findViewById(R.id.microseconds);
-        microsTIEditText.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                microsTIEditText.setText("");
-                return false;
-            }
-        });
-        nsTIEditText = (EditText) view.findViewById(R.id.nanoseconds);
-        nsTIEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                nsTIEditText.setText("");
-                return false;
-            }
-        });
-        psTIEditText = (EditText) view.findViewById(R.id.picoseconds);
-        psTIEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                psTIEditText.setText("");
-                return false;
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
-
-        RadioGroup outputWidthRadioGroup = (RadioGroup) view.findViewById(R.id.output_width_radio_group);
-        outputWidthRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        Spinner outputWidthSpinner = (Spinner) view.findViewById(R.id.output_width_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.ow_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        outputWidthSpinner.setAdapter(adapter);
+        outputWidthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.ten_radio_button) setOutputWidth(10);
-                else if (checkedId == R.id.twenty_radio_button) setOutputWidth(20);
-                else if (checkedId == R.id.fifty_radio_button) setOutputWidth(50);
-                else if (checkedId == R.id.hundred_radio_button) setOutputWidth(100);
-                else
-                    Toast.makeText(view.getContext(), "Non of output widths has been selected!", Toast.LENGTH_SHORT).show();
-                Log.i("TIMF/checkedId", String.valueOf(checkedId));
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("TIMF/OW/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
+                setTimeInterval(getOWValueFromSpinner(parent.getItemAtPosition(position), position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -121,6 +109,59 @@ public class TimeIntervalModeFragment extends Fragment {
         return view;
     }
 
+    private double getOWValueFromSpinner(Object itemAtPosition, int position) {
+        double d;
+        switch (position) {
+            case 0:
+                d = 10E-9;
+                break;
+            case 1:
+                d = 20E-9;
+                break;
+            case 2:
+                d = 50E-9;
+                break;
+            case 3:
+                d = 100E-9;
+                break;
+            default:
+                d = 0;
+        }
+        Log.i("TIMF/getOWValue", String.valueOf(d));
+        return d;
+    }
+
+
+    private double getTIValueFromSpinner(Object itemAtPosition, int position) {
+        double d;
+        switch (position) {
+            case 0:
+                d = 10E-9;
+                break;
+            case 1:
+                d = 1E-6;
+                break;
+            case 2:
+                d = 10E-6;
+                break;
+            case 3:
+                d = 100E-6;
+                break;
+            case 4:
+                d = 10E-3;
+                break;
+            case 5:
+                d = 100E-3;
+                break;
+            case 6:
+                d = 1;
+                break;
+            default:
+                d = 0;
+        }
+        Log.i("TIMF/getTIValue", String.valueOf(d));
+        return d;
+    }
 
     public static double getOutputWidth() {
         return outputWidth;
@@ -130,35 +171,6 @@ public class TimeIntervalModeFragment extends Fragment {
         TimeIntervalModeFragment.outputWidth = outputWidth;
     }
 
-    public double getsTI() {
-        double sTI = (Integer.parseInt(sTIEditText.getText().toString()));
-        Log.i("TIMF", "getsTI: " + sTI);
-        return sTI;
-    }
-
-    public double getMsTI() {
-        double msTI = (Integer.parseInt(msTIEditText.getText().toString()));
-        Log.i("TIMF", "getmsTI: " + msTI);
-        return msTI;
-    }
-
-    public double getMicrosTI() {
-        double microsTI = (Integer.parseInt(microsTIEditText.getText().toString()));
-        Log.i("TIMF", "getmicrosTI: " + microsTI);
-        return microsTI;
-    }
-
-    public double getNsTI() {
-        double nsTI = (Integer.parseInt(nsTIEditText.getText().toString()));
-        Log.i("TIMF", "getnsTI: " + nsTI);
-        return nsTI;
-    }
-
-    public double getPsTI() {
-        double psTI = (Integer.parseInt(psTIEditText.getText().toString()));
-        Log.i("TIMF", "getpsTI: " + psTI);
-        return psTI;
-    }
 
     public void setPeriodTriggerSectionSelected(boolean periodTriggerSectionSelected) {
         isPeriodTriggerSectionSelected = periodTriggerSectionSelected;
@@ -187,4 +199,13 @@ public class TimeIntervalModeFragment extends Fragment {
     public boolean hasSignal_CW_InvertedPolarization() {
         return checkBoxCW.isChecked();
     }
+
+    public double getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(double timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+
 }
