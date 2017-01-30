@@ -16,13 +16,12 @@ import java.util.Objects;
  * Created by Jakub on 2016-12-26.
  */
 
-public class DTO {
-    private static String TIME_INTERVALS = "TI";
-    private static String FREQUENCY = "F";
+public class DataForGenerator {
+    public static String TIME_INTERVALS = "TI";
+    public static String FREQUENCY = "F";
 
     private String selectedMode;
     private boolean isExternalClockSelected;
-    private double timeInterval;
     private double outputWidth;
     private static boolean isPeriodTriggerSectionSelected;
     private double triggerFrequency;
@@ -30,9 +29,10 @@ public class DTO {
     private boolean hasSignal_A_InvertedPolarization, hasSignal_B_InvertedPolarization, hasSignal_CW_InvertedPolarization;
     private double freqencyInMhz;
     private int frequencyPeriod;
+    private byte[] timeInterval;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public DTO() throws NullPointerException {
+    public DataForGenerator() throws NullPointerException {
         SendDataActivity sdf = new SendDataActivity();
         setSelectedMode(SendDataActivity.getSelectedMode());
         setExternalClockSelected(SendDataActivity.getExternalClockSelected());
@@ -42,11 +42,11 @@ public class DTO {
             setTimeInterval(timf.getTimeInterval());
             setOutputWidth(TimeIntervalModeFragment.getOutputWidth());
             setIsPeriodTriggerSectionSelected(TimeIntervalModeFragment.getPeriodTriggerSectionSelected());
-            Log.i("DTO", "isPeriodTriggerSectionSelected: " + String.valueOf(isPeriodTriggerSectionSelected()));
+            Log.i("DataForGenerator", "isPeriodTriggerSectionSelected: " + String.valueOf(isPeriodTriggerSectionSelected()));
             if (isPeriodTriggerSectionSelected) {
                 PeriodTriggerSectionFragment ptsf = TimeIntervalModeFragment.getPeriodTriggerSectionFragment();
                 double s = ptsf.getperiodTrigger();
-                Log.i("DTO/konstruktor", "s: " + String.valueOf(s));
+                Log.i("DataForGenerator/kons", "s: " + String.valueOf(s));
 
 
                 if (s == 0) setFrequencyPeriod(0);
@@ -56,6 +56,7 @@ public class DTO {
                 FrequencyTriggerSectionFragment ftsf = TimeIntervalModeFragment.getFrequencyTriggerSectionFragment();
                 setFrequencyPeriod((int) ftsf.getFrequencyTrigger());
             }
+
             setOCT();
             setDAC();
             setHasSignal_A_InvertedPolarization(timf.hasSignal_A_InvertedPolarization());
@@ -70,7 +71,7 @@ public class DTO {
 
     @Override
     public String toString() {
-        return "DTO{" +
+        return "DataForGenerator{" +
                 "selectedMode='" + selectedMode + '\'' +
                 ", isExternalClockSelected=" + isExternalClockSelected +
                 ", timeInterval=" + timeInterval +
@@ -108,7 +109,7 @@ public class DTO {
     }
 
     public static void setIsPeriodTriggerSectionSelected(boolean isPeriodTriggerSectionSelected) {
-        DTO.isPeriodTriggerSectionSelected = isPeriodTriggerSectionSelected;
+        DataForGenerator.isPeriodTriggerSectionSelected = isPeriodTriggerSectionSelected;
     }
 
 
@@ -120,7 +121,7 @@ public class DTO {
         double f = getFrequencyPeriod();
         if (f != 0) {
             OCT = 3.322 * Math.log10(f / 1039);
-            Log.i("DTO/OCT", String.valueOf(OCT));
+            Log.i("DataForGenerator/OCT", String.valueOf(OCT));
         }
     }
 
@@ -132,7 +133,7 @@ public class DTO {
         double f = getFrequencyPeriod();
         if (f != 0) {
             DAC = 2048 - ((2078 * Math.pow(2, 10 + getOCT())) / f);
-            Log.i("DTO/DAC", String.valueOf(DAC));
+            Log.i("DataForGenerator/DAC", String.valueOf(DAC));
         }
     }
 
@@ -176,14 +177,6 @@ public class DTO {
         this.frequencyPeriod = frequencyPeriod;
     }
 
-    public double getTimeInterval() {
-        return timeInterval;
-    }
-
-    public void setTimeInterval(double timeInterval) {
-        this.timeInterval = timeInterval;
-    }
-
     public double getTriggerFrequency() {
         return triggerFrequency;
     }
@@ -198,5 +191,14 @@ public class DTO {
 
     public void setOutputWidth(double outputWidth) {
         this.outputWidth = outputWidth;
+    }
+
+
+    public byte[] getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(byte[] timeInterval) {
+        this.timeInterval = timeInterval;
     }
 }

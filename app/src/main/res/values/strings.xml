@@ -40,6 +40,8 @@
     <string name="choose_mode">Choose mode:</string>
     <string name="periods">Periods:</string>
     <string name="frequency3">Frequency:</string>
+    <string name="adf">ADF</string>
+    <string name="trig_div">TRIG_DIV</string>
 
 
     <string-array name="ti_mode_array">
@@ -47,6 +49,7 @@
         <item>1 μs</item>
         <item>10 μs</item>
         <item>100 μs</item>
+        <item>1 ms</item>
         <item>10 ms</item>
         <item>100 ms</item>
         <item>1 s</item>

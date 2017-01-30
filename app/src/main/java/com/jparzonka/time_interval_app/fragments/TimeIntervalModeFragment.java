@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.jparzonka.time_interval_app.R;
+import com.jparzonka.time_interval_app.data.ByteArrayForSYNTH_N;
 
 /**
  * Created by Jakub on 2016-12-26.
@@ -28,10 +29,9 @@ public class TimeIntervalModeFragment extends Fragment {
     private static FrequencyTriggerSectionFragment frequencyTriggerSectionFragment;
     private static PeriodTriggerSectionFragment periodTriggerSectionFragment;
     private static CheckBox checkBoxA, checkBoxB, checkBoxCW;
-    private double timeInterval;
+    private byte[] timeInterval;
     private static boolean isPeriodTriggerSectionSelected;
-    private boolean firstChecked = true;
-    private boolean secondChecked = true;
+    public static boolean isTriggerSelected = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class TimeIntervalModeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("TIMF/OW/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
-                setTimeInterval(getOWValueFromSpinner(parent.getItemAtPosition(position), position));
+                setOutputWidth(getOWValueFromSpinner(parent.getItemAtPosition(position), position));
             }
 
             @Override
@@ -87,14 +87,15 @@ public class TimeIntervalModeFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // find which radio button is selected
                 if (checkedId == R.id.period_trigger_section_radio_button) {
+                    isTriggerSelected = true;
                     setPeriodTriggerSectionSelected(true);
                     periodTriggerSectionFragment = new PeriodTriggerSectionFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.replace(R.id.trigger_section_frame_layout, periodTriggerSectionFragment).commit();
                     Log.i("TIMF", "fragment replaced on PeriodTriggerSectionFragment");
-
                 } else if (checkedId == R.id.frequency_trigger_section_radio_button) {
                     setPeriodTriggerSectionSelected(false);
+                    isTriggerSelected = true;
                     frequencyTriggerSectionFragment = new FrequencyTriggerSectionFragment();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.replace(R.id.trigger_section_frame_layout, frequencyTriggerSectionFragment).commit();
@@ -131,36 +132,38 @@ public class TimeIntervalModeFragment extends Fragment {
         return d;
     }
 
-
-    private double getTIValueFromSpinner(Object itemAtPosition, int position) {
-        double d;
+    private byte[] getTIValueFromSpinner(Object itemAtPosition, int position) {
+        byte[] array;
         switch (position) {
             case 0:
-                d = 10E-9;
+                array = ByteArrayForSYNTH_N.array10ns;
                 break;
             case 1:
-                d = 1E-6;
+                array = ByteArrayForSYNTH_N.array1micros;
                 break;
             case 2:
-                d = 10E-6;
+                array = ByteArrayForSYNTH_N.array10micros;
                 break;
             case 3:
-                d = 100E-6;
+                array = ByteArrayForSYNTH_N.array100micros;
                 break;
             case 4:
-                d = 10E-3;
+                array = ByteArrayForSYNTH_N.array1ms;
                 break;
             case 5:
-                d = 100E-3;
+                array = ByteArrayForSYNTH_N.array10ms;
                 break;
             case 6:
-                d = 1;
+                array = ByteArrayForSYNTH_N.array100ms;
+                break;
+            case 7:
+                array = ByteArrayForSYNTH_N.array1s;
                 break;
             default:
-                d = 0;
+                array = ByteArrayForSYNTH_N.array0;
         }
-        Log.i("TIMF/getTIValue", String.valueOf(d));
-        return d;
+        Log.i("TIMF/getTIValue", "size of array = " + String.valueOf(array.length));
+        return array;
     }
 
     public static double getOutputWidth() {
@@ -170,7 +173,6 @@ public class TimeIntervalModeFragment extends Fragment {
     private void setOutputWidth(double outputWidth) {
         TimeIntervalModeFragment.outputWidth = outputWidth;
     }
-
 
     public void setPeriodTriggerSectionSelected(boolean periodTriggerSectionSelected) {
         isPeriodTriggerSectionSelected = periodTriggerSectionSelected;
@@ -200,12 +202,12 @@ public class TimeIntervalModeFragment extends Fragment {
         return checkBoxCW.isChecked();
     }
 
-    public double getTimeInterval() {
+
+    public byte[] getTimeInterval() {
         return timeInterval;
     }
 
-    public void setTimeInterval(double timeInterval) {
+    public void setTimeInterval(byte[] timeInterval) {
         this.timeInterval = timeInterval;
     }
-
 }

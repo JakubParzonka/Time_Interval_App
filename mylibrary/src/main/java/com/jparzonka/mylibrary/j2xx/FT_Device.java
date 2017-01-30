@@ -8,7 +8,6 @@ import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbRequest;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.jparzonka.mylibrary.j2xx.D2xxManager.D2xxException;
 import com.jparzonka.mylibrary.j2xx.D2xxManager.DriverParameters;
@@ -489,11 +488,11 @@ public class FT_Device {
             request.setClientData(obj);
         }
         boolean r = request.queue(ByteBuffer.wrap(data), length);
-        Toast.makeText(mContext, "FT write request.queue(): " + r, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "FT write request.queue(): " + r, Toast.LENGTH_SHORT).show();
         if (length == 0) {
             if (request.queue(ByteBuffer.wrap(new byte[1]), length)) {
                 rc = length;
-                Toast.makeText(mContext, "FT write data.length = 0" + r, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "FT write data.length = 0" + r, Toast.LENGTH_SHORT).show();
             }
         } else if (r) {
             rc = length;
@@ -995,23 +994,23 @@ public class FT_Device {
 
     private boolean findDeviceEndpoints() {
         for (int i = 0; i < this.mUsbInterface.getEndpointCount(); i++) {
-            Toast.makeText(mContext, "FT findDeviceEndpoints number: " + i, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "FT findDeviceEndpoints number: " + i, Toast.LENGTH_SHORT).show();
             Log.i(TAG, "EP: " + String.format("0x%02X", this.mUsbInterface.getEndpoint(i).getAddress()));
-            Toast.makeText(mContext, "FT findDeviceEndpoints: " + String.format("0x%02X", this.mUsbInterface.getEndpoint(i).getAddress()), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "FT findDeviceEndpoints: " + String.format("0x%02X", this.mUsbInterface.getEndpoint(i).getAddress()), Toast.LENGTH_SHORT).show();
             if (this.mUsbInterface.getEndpoint(i).getType() != 2) {
                 Log.i(TAG, "Not Bulk Endpoint");
-                Toast.makeText(mContext, "FT findDeviceEndpoints if", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "FT findDeviceEndpoints if", Toast.LENGTH_SHORT).show();
             } else if (this.mUsbInterface.getEndpoint(i).getDirection() == SPI_SLAVE_CMD.SPI_MASTER_TRANSFER) {
-                Toast.makeText(mContext, "FT findDeviceEndpoints else if", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "FT findDeviceEndpoints else if", Toast.LENGTH_SHORT).show();
                 this.mBulkInEndpoint = this.mUsbInterface.getEndpoint(i);
                 this.mMaxPacketSize = this.mBulkInEndpoint.getMaxPacketSize();
             } else {
-                Toast.makeText(mContext, "FT findDeviceEndpoints else + i: " + i, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "FT findDeviceEndpoints else + i: " + i, Toast.LENGTH_SHORT).show();
                 this.mBulkOutEndpoint = this.mUsbInterface.getEndpoint(i);
             }
         }
         boolean result = !(this.mBulkOutEndpoint == null || this.mBulkInEndpoint == null);
-        Toast.makeText(mContext, "FT findDeviceEndpoints result: " + result, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "FT findDeviceEndpoints result: " + result, Toast.LENGTH_SHORT).show();
         return result;
     }
 

@@ -125,12 +125,12 @@ public class OpenDeviceActivity extends AppCompatActivity {
     private boolean openDevice(UsbManager usbManager, UsbInterface usbInterface, FT_Device ftDev, int numberOfDevices) {
 
         if (numberOfDevices > 0) {
-            Toast.makeText(this, "ODA: devCount > 0", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "ODA: devCount > 0", Toast.LENGTH_SHORT).show();
 //           ftDev = new FT_Device(this, usbManager, usbDeviceT5300, usbInterface);
 //          //ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
             //  ftDev = d2xxManager.openByIndex(this, 0);
             ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
-            Toast.makeText(this, "openDevice/toString: " + d2xxManager.toString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "openDevice/toString: " + d2xxManager.toString(), Toast.LENGTH_LONG).show();
             if (ftDev == null) {
                 Toast.makeText(this, "ODA: ftDev == null", Toast.LENGTH_SHORT).show();
                 result = false;
@@ -152,7 +152,7 @@ public class OpenDeviceActivity extends AppCompatActivity {
                 ftDev.setFlowControl(D2xxManager.FT_FLOW_NONE, (byte) 0x00, (byte) 0x00);
                 ftDev.setLatencyTimer((byte) 16);
                 //ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
-                Toast.makeText(this, "ODA: ftDev != null", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "ODA: ftDev != null", Toast.LENGTH_SHORT).show();
                 result = true;
             }
         } else {

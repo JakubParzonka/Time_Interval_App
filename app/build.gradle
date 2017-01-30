@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    final HOCKEYAPP_APP_ID= "\"7c5622ee0cbe44f9a7f5a239ed49a9c7\"";
+    final HOCKEYAPP_APP_ID = "\"7c5622ee0cbe44f9a7f5a239ed49a9c7\"";
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
     defaultConfig {
@@ -31,6 +31,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'net.hockeyapp.android:HockeySDK:4.1.1'
+    compile 'com.android.support:design:24.2.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/commons-codec-1.10/commons-codec-1.10.jar')
+    compile files('C:/Users/Jakub/AndroidStudioProjects/Time_Interval_App/commons-lang3-3.4.jar')
 }

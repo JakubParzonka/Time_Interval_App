@@ -21,7 +21,6 @@ public class FrequencyModeFragment extends Fragment {
     private double frequencyInMHz;
     private int period;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
