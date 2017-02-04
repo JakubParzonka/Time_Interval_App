@@ -1,5 +1,7 @@
 package com.jparzonka.time_interval_app.data;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.BitSet;
@@ -42,4 +44,17 @@ public class Convert {
         }
         return bytes;
     }
+
+    public static byte[] addByteArray(byte[] first, byte[] second) {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            outputStream.write(first);
+            outputStream.write(second);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream.toByteArray();
+    }
+
 }

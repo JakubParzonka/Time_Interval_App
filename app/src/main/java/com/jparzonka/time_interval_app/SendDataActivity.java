@@ -17,14 +17,15 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.jparzonka.mylibrary.j2xx.FT_Device;
-import com.jparzonka.time_interval_app.data.BitSetHandler;
+import com.jparzonka.time_interval_app.data.CommandAddresses;
+import com.jparzonka.time_interval_app.data.CommandsHandler;
 import com.jparzonka.time_interval_app.data.Convert;
 import com.jparzonka.time_interval_app.data.DataForGenerator;
+import com.jparzonka.time_interval_app.data.FrequencyModeData;
 import com.jparzonka.time_interval_app.fragments.FrequencyModeFragment;
 import com.jparzonka.time_interval_app.fragments.TimeIntervalModeFragment;
 
-import org.apache.commons.lang3.ArrayUtils;
-
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -51,7 +52,6 @@ public class SendDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send_data_layout);
 
-
         try {
             setFtDev(OpenDeviceActivity.getFtDev());
         } catch (NullPointerException ignored) {
@@ -73,6 +73,7 @@ public class SendDataActivity extends AppCompatActivity {
                 }
             }
         });
+
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.mode_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -82,34 +83,19 @@ public class SendDataActivity extends AppCompatActivity {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 // find which radio button is selected
                 if (checkedId == R.id.ti_radio_button) {
-                    setSelectedMode("TI");
+                    setSelectedMode(DataForGenerator.TIME_INTERVALS);
                     timeIntervalModeFragment = new TimeIntervalModeFragment();
                     fragmentTransaction.replace(R.id.operation_mode_fragment, timeIntervalModeFragment).commit();
                     Log.i("SendDataActivity", "fragment replaced on TimeIntervalModeFragment");
                 } else if (checkedId == R.id.frequency_radio_button) {
-                    setSelectedMode("F");
+                    setSelectedMode(DataForGenerator.FREQUENCY);
+                    //Inicjalizacja danych dla trybu 'F'
+                    FrequencyModeData frequencyModeData = new FrequencyModeData();
                     frequencyModeFragment = new FrequencyModeFragment();
                     fragmentTransaction.replace(R.id.operation_mode_fragment, frequencyModeFragment).commit();
                     Log.i("SendDataActivity", "fragment replaced on FrequencyModeFragment");
                 }
-            }
-        });
-
-        Button startButton = (Button) findViewById(R.id.start_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                if (Objects.equals(selectedMode, DataForGenerator.TIME_INTERVALS) && TimeIntervalModeFragment.isTriggerSelected) {
-                    dataForGenerator = new DataForGenerator();
-                    Log.i("Data", dataForGenerator.toString());
-                    Toast.makeText(v.getContext(), dataForGenerator.toString(), Toast.LENGTH_LONG).show();
-                    //    if(dataForGenerator.)
-                    handleSending(dataForGenerator);
-                } else {
-                    Toast.makeText(v.getContext(), "Wybierz rodzaj wyzwalania", Toast.LENGTH_SHORT).show();
-                }
-
+                Toast.makeText(getApplicationContext(), "Selected mode: " + selectedMode, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -125,21 +111,23 @@ public class SendDataActivity extends AppCompatActivity {
 
             }
         });
+
         Button trigDivButton = (Button) findViewById(R.id.trigdiv_button);
         trigDivButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                dataHex = "0E";
-                byte[] address = Convert.hexStringToByteArray(dataHex);
-                Toast.makeText(v.getContext(), "Address: " + dataHex, Toast.LENGTH_SHORT).show();
-                sendDataToGenerator(data);
-                byte[] data = {0x02, 0x00, 0x00, 0x00};
-                Toast.makeText(v.getContext(), "Data: " + dataHex, Toast.LENGTH_SHORT).show();
-
-                sendDataToGenerator(ArrayUtils.addAll(address, data));
+//                dataHex = "0E";
+//                byte[] address = Convert.hexStringToByteArray(dataHex);
+//                Toast.makeText(v.getContext(), "Address: " + dataHex, Toast.LENGTH_SHORT).show();
+//                sendDataToGenerator(data);
+//                byte[] data = {0x02, 0x00, 0x00, 0x00};
+//                Toast.makeText(v.getContext(), "Data: " + dataHex, Toast.LENGTH_SHORT).show();
+//
+//                sendDataToGenerator(ArrayUtils.addAll(address, data));
             }
         });
+
         Button adfButton = (Button) findViewById(R.id.loremipsum);
         adfButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -162,85 +150,106 @@ public class SendDataActivity extends AppCompatActivity {
                 } catch (NumberFormatException nfe) {
                     Toast.makeText(v.getContext(), "Wprowadź poprawny formay danych", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
 
+        Button startButton = (Button) findViewById(R.id.start_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                if (Objects.equals(selectedMode, DataForGenerator.TIME_INTERVALS)) {
+                    dataForGenerator = new DataForGenerator();
+                    Log.i("Data", dataForGenerator.toString());
+                    Toast.makeText(v.getContext(), dataForGenerator.toString(), Toast.LENGTH_LONG).show();
+                    handleSending(dataForGenerator);
+                } else if (Objects.equals(selectedMode, DataForGenerator.FREQUENCY)) {
+                    dataForGenerator = new DataForGenerator();
+                    Log.i("Data", dataForGenerator.toString());
+                    Toast.makeText(v.getContext(), dataForGenerator.toString(), Toast.LENGTH_LONG).show();
+                    handleSending(dataForGenerator);
+                }
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("ShowToast")
     private void handleSending(DataForGenerator dataForGenerator) {
-
-        BitSetHandler s = new BitSetHandler(dataForGenerator);
+        CommandsHandler s = new CommandsHandler(dataForGenerator);
         if (!isADFset) {
-            Toast.makeText(this, "isADFset = " + isADFset, Toast.LENGTH_SHORT).show();
-            sendDataToGenerator(s.getSET_S());
-            sendDataToGenerator(s.getSET_TRIG());
-            sendDataToGenerator(s.getTRIG_DIV());
-            sendDataToGenerator(s.getSYNTH_N(dataForGenerator.getTimeInterval()));
-            sendDataToGenerator(s.getADF4360_LOAD_R_COUNTER_LATCH());
-            sendDataToGenerator(s.getADF4360_LOAD_CONTROL_LATCH());
-            sendDataToGenerator(s.getADF4360_LOAD_N_COUNTER_LATCH());
-            sendDataToGenerator(s.getRESET());
-            sendDataToGenerator(s.getCFR1());
-            sendDataToGenerator(s.getFTW0());
+            setSynthesizer(s);
             isADFset = true;
-        } else {
-            Toast.makeText(this, "isADFset = " + isADFset, Toast.LENGTH_SHORT).show();
-            sendDataToGenerator(s.getSET_S());
-            sendDataToGenerator(s.getSET_TRIG());
-            sendDataToGenerator(s.getTRIG_DIV());
-            sendDataToGenerator(s.getSYNTH_N(dataForGenerator.getTimeInterval()));
-            sendDataToGenerator(s.getRESET());
-            sendDataToGenerator(s.getCFR1());
-            sendDataToGenerator(s.getFTW0());
         }
-/*
+        Toast.makeText(this, "SDA/handleSending/isADFset = " + isADFset, Toast.LENGTH_SHORT).show();
 
-        byte[] data = {0x00, 0x21, 0x22, 0x00, 0x00};
-        sendDataToGenerator(data);
+//        Toast.makeText(getApplicationContext(), "Selected mode in handleSending: \n" + selectedMode, Toast.LENGTH_SHORT).show();
 
-        data = new byte[]{0x0D, (byte) 0xBE, 0x69, 0x00, 0x00};
-        sendDataToGenerator(data);
-
-        data = new byte[]{0x0E, 0x02, 0x00, 0x00, 0x00};
-        sendDataToGenerator(data);
-
-        data = new byte[]{0x0F, 0x00, 0x10, 0x00, 0x00};
-        sendDataToGenerator(data);
-
-
-        data = new byte[]{0x10, (byte) 0x05, 0x00, 0x34, 0x00};
-        sendDataToGenerator(data);
-
-        data = new byte[]{0x10, (byte) 0xE4, 0x35, 0x0E, 0x00};
-        sendDataToGenerator(data);
-
-        data = new byte[]{0x10, 0x0A, 0x23, 0x00, 0x00};
-        sendDataToGenerator(data);
-
-        data = new byte[]{0x0C, 0x05, 0x00, 0x34, 0x00};
-        sendDataToGenerator(data);
-
-        data = new byte[]{0x40, 0x42, 0x00, 0x00, 0x00};
-        sendDataToGenerator(data);
-
-        data = new byte[]{0x44, (byte) 0x3E, 0x2B, (byte) 0xEB, 0x3B};
-        sendDataToGenerator(data);
-        */
+        if (selectedMode.equals(DataForGenerator.TIME_INTERVALS)) {
+            Toast.makeText(this, "SDA/handleSending/TI_MODE ", Toast.LENGTH_SHORT).show();
+            handleTimeIntervalMode(s);
+        } else if (selectedMode.equals(DataForGenerator.FREQUENCY)) {
+            Toast.makeText(this, "SDA/handleSending/F_MODE ", Toast.LENGTH_SHORT).show();
+            handleFrequencyMode(s, dataForGenerator);
+        } else {
+            throw new NullPointerException("Coś się pokićkało z trybami!");
+        }
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void handleFrequencyMode(CommandsHandler s, DataForGenerator dfg) {
+        Toast.makeText(this, "SDA/handleFrequencyMode ", Toast.LENGTH_SHORT).show();
+        // SET_S
+//        byte[] sets = new byte[]{0x00, 0x31, 0x22, 0x00, 0x00};
+//        sendDataToGenerator(sets);
+        sendDataToGenerator(s.getSET_S());
+        // WRITE_FTWO
+//        byte[] ftw0 = new byte[]{0x44, (byte) 0xFF, (byte) 0x7C, (byte) 0x50, 0x07};
+//        sendDataToGenerator(ftw0);
+        sendDataToGenerator(Convert.addByteArray(Convert.hexStringToByteArray(CommandAddresses.FTW0.getAddress()), dfg.getFreqencyInMhz()));
+        // SYNTH_N
+//        byte[] synth = new byte[]{0x0F, 0x0C, 0x00, 0x00, 0x00};
+//        sendDataToGenerator(synth);
+        sendDataToGenerator(Convert.addByteArray(Convert.hexStringToByteArray(CommandAddresses.SYNTH_N.getAddress()), dfg.getFrequencyN()));
+        // TRIG_DIV
+//        byte[] trig = new byte[]{0x0E, 0x00, 0x00, 0x00, 0x00};
+//        sendDataToGenerator(trig);
+        sendDataToGenerator(s.getTRIG_DIV());
+    }
+
+    private void setSynthesizer(CommandsHandler s) {
+        Toast.makeText(this, "SDA/setSynthesizer ", Toast.LENGTH_SHORT).show();
+        sendDataToGenerator(s.getADF4360_LOAD_R_COUNTER_LATCH());
+        sendDataToGenerator(s.getADF4360_LOAD_CONTROL_LATCH());
+        sendDataToGenerator(s.getADF4360_LOAD_N_COUNTER_LATCH());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void handleTimeIntervalMode(CommandsHandler s) {
+        Toast.makeText(this, "SDA/handleTimeIntervalMode ", Toast.LENGTH_SHORT).show();
+        sendDataToGenerator(s.getSET_S());
+        sendDataToGenerator(s.getSET_TRIG());
+        sendDataToGenerator(s.getTRIG_DIV());
+        sendDataToGenerator(s.getSYNTH_N(dataForGenerator.getTimeInterval()));
+        sendDataToGenerator(s.getRESET());
+        sendDataToGenerator(s.getCFR1());
+        sendDataToGenerator(s.getFTW0());
+    }
+
+
     public void sendDataToGenerator(byte[] outputData) {
+        Log.i("SDA/SDTG", Arrays.toString(outputData));
+
         try {
 //            for (byte x : outputData) {
 //                Toast.makeText(this, "SDA/SDTG:" + x + " ", Toast.LENGTH_SHORT).show();
 //            }
+////          Toast.makeText(this, "SDA/SDTG:" + Arrays.toString(outputData) + " ", Toast.LENGTH_SHORT).show();
             ftDev.setLatencyTimer((byte) 16);
             int result = ftDev.write(outputData, outputData.length, false);
-            //         Toast.makeText(this, "SDA/SDTG/Data bytes: " + result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "SDA/SDTG/Data bytes: " + result, Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
             Toast.makeText(this, "SDA/SDTG/ftDev == null", Toast.LENGTH_SHORT).show();
         }

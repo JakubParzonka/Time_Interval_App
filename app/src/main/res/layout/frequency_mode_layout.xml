@@ -8,7 +8,8 @@
         android:id="@+id/frequency_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/frequency_mode_spinner_title"
@@ -30,7 +31,8 @@
         android:id="@+id/period_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/frequency_period_spinner_title"
@@ -47,4 +49,5 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
 </LinearLayout>

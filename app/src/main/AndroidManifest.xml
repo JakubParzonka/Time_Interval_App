@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="SendDataActivity"
-            android:parentActivityName=".OpenDeviceActivity" />
+        android:name="SendDataActivity"
+        android:parentActivityName=".OpenDeviceActivity" />
     </application>
 
 </manifest>

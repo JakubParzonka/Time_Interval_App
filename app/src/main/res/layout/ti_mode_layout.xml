@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/ti_spinner_title"
@@ -33,17 +34,17 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/ow_spinner_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:padding="10dp"
                 android:text="@string/output_width"
                 android:textColor="#000000"
                 android:textSize="20sp" />
-
 
             <Spinner
                 android:id="@+id/output_width_spinner"
@@ -64,7 +65,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <RadioGroup
             android:id="@+id/trigger_radio_group"
@@ -106,7 +108,8 @@
         android:id="@+id/checkbox_relative_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/polarization_title"

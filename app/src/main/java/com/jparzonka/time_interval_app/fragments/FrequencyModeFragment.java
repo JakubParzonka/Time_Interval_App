@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.jparzonka.time_interval_app.R;
+import com.jparzonka.time_interval_app.data.FrequencyModeData;
 
 /**
  * Created by Jakub on 2016-12-26.
@@ -18,7 +19,7 @@ import com.jparzonka.time_interval_app.R;
 
 public class FrequencyModeFragment extends Fragment {
     private View view;
-    private double frequencyInMHz;
+    private byte[] frequencyInMHz, frequencyN;
     private int period;
 
     @Override
@@ -35,7 +36,7 @@ public class FrequencyModeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("FMF/F/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
-                setFrequencyInMHz(getFrequencyValueFromSpinner(parent.getItemAtPosition(position), position));
+                setFrequencyInMHz(getFrequencyValueFromSpinner(position));
             }
 
             @Override
@@ -53,7 +54,7 @@ public class FrequencyModeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("FMF/FP/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
-                setFrequencyInMHz(getFrequencyPeriodCountFromSpinner(parent.getItemAtPosition(position), position));
+                setPeriod((int) getFrequencyPeriodCountFromSpinner(parent.getItemAtPosition(position), position));
             }
 
             @Override
@@ -66,26 +67,31 @@ public class FrequencyModeFragment extends Fragment {
         return view;
     }
 
-    private double getFrequencyValueFromSpinner(Object itemAtPosition, int position) {
-        double d;
+    private byte[] getFrequencyValueFromSpinner(int position) {
+        byte[] array;
         switch (position) {
             case 0:
-                d = 10E+9;
+                array = FrequencyModeData.getOneMHZ().get(2);
+                setFrequencyN(FrequencyModeData.getOneMHZ().get(1));
                 break;
             case 1:
-                d = 25E+9;
+                array = FrequencyModeData.getTwoMHZ().get(2);
+                setFrequencyN(FrequencyModeData.getTwoMHZ().get(1));
                 break;
             case 2:
-                d = 50E+9;
+                array = FrequencyModeData.getFiveMHZ().get(2);
+                setFrequencyN(FrequencyModeData.getFiveMHZ().get(1));
                 break;
             case 3:
-                d = 75E+9;
+                array = FrequencyModeData.getTenMHZ().get(2);
+                setFrequencyN(FrequencyModeData.getTenMHZ().get(1));
                 break;
             default:
-                d = 0;
+                array = new byte[]{0x00, 0x00, 0x00, 0x00};
+
         }
-        Log.i("FMF/getFMValue", String.valueOf(d));
-        return d;
+        Log.i("FMF/getFMValue", String.valueOf(array.length));
+        return array;
     }
 
     private double getFrequencyPeriodCountFromSpinner(Object itemAtPosition, int position) {
@@ -110,12 +116,13 @@ public class FrequencyModeFragment extends Fragment {
         return d;
     }
 
-    public double getFrequencyInMHz() {
+
+    public byte[] getFrequencyInMHz() {
         return frequencyInMHz;
     }
 
-    private void setFrequencyInMHz(double frequencyInMHz) {
-        Log.i("FMF/setFrequencyInMHz", String.valueOf(frequencyInMHz));
+    public void setFrequencyInMHz(byte[] frequencyInMHz) {
+        Log.i("FMF/setFrequencyInMHz", String.valueOf(frequencyInMHz.length));
         this.frequencyInMHz = frequencyInMHz;
     }
 
@@ -126,5 +133,13 @@ public class FrequencyModeFragment extends Fragment {
     public void setPeriod(int period) {
         Log.i("FMF/setPeriod", String.valueOf(period));
         this.period = period;
+    }
+
+    public byte[] getFrequencyN() {
+        return frequencyN;
+    }
+
+    public void setFrequencyN(byte[] frequencyN) {
+        this.frequencyN = frequencyN;
     }
 }

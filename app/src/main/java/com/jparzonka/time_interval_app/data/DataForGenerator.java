@@ -10,6 +10,7 @@ import com.jparzonka.time_interval_app.fragments.FrequencyTriggerSectionFragment
 import com.jparzonka.time_interval_app.fragments.PeriodTriggerSectionFragment;
 import com.jparzonka.time_interval_app.fragments.TimeIntervalModeFragment;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -27,36 +28,35 @@ public class DataForGenerator {
     private double triggerFrequency;
     private double OCT, DAC;
     private boolean hasSignal_A_InvertedPolarization, hasSignal_B_InvertedPolarization, hasSignal_CW_InvertedPolarization;
-    private double freqencyInMhz;
     private int frequencyPeriod;
-    private byte[] timeInterval;
+    private byte[] timeInterval, freqencyInMhz, frequencyN;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public DataForGenerator() throws NullPointerException {
         SendDataActivity sdf = new SendDataActivity();
         setSelectedMode(SendDataActivity.getSelectedMode());
         setExternalClockSelected(SendDataActivity.getExternalClockSelected());
-        if (Objects.equals(SendDataActivity.getSelectedMode(), TIME_INTERVALS)) {
 
+        if (Objects.equals(SendDataActivity.getSelectedMode(), TIME_INTERVALS)) {
             TimeIntervalModeFragment timf = SendDataActivity.getTimeIntervalModeFragment();
             setTimeInterval(timf.getTimeInterval());
             setOutputWidth(TimeIntervalModeFragment.getOutputWidth());
             setIsPeriodTriggerSectionSelected(TimeIntervalModeFragment.getPeriodTriggerSectionSelected());
             Log.i("DataForGenerator", "isPeriodTriggerSectionSelected: " + String.valueOf(isPeriodTriggerSectionSelected()));
-            if (isPeriodTriggerSectionSelected) {
-                PeriodTriggerSectionFragment ptsf = TimeIntervalModeFragment.getPeriodTriggerSectionFragment();
-                double s = ptsf.getperiodTrigger();
-                Log.i("DataForGenerator/kons", "s: " + String.valueOf(s));
-
-
-                if (s == 0) setFrequencyPeriod(0);
-                else setFrequencyPeriod((int) (1 / s));
-
-            } else {
-                FrequencyTriggerSectionFragment ftsf = TimeIntervalModeFragment.getFrequencyTriggerSectionFragment();
-                setFrequencyPeriod((int) ftsf.getFrequencyTrigger());
+            try {
+                if (isPeriodTriggerSectionSelected) {
+                    PeriodTriggerSectionFragment ptsf = TimeIntervalModeFragment.getPeriodTriggerSectionFragment();
+                    double s = ptsf.getperiodTrigger();
+                    Log.i("DataForGenerator/kons", "s: " + String.valueOf(s));
+                    if (s == 0) setFrequencyPeriod(0);
+                    else setFrequencyPeriod((int) (1 / s));
+                } else {
+                    FrequencyTriggerSectionFragment ftsf = TimeIntervalModeFragment.getFrequencyTriggerSectionFragment();
+                    setFrequencyPeriod((int) ftsf.getFrequencyTrigger());
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-
             setOCT();
             setDAC();
             setHasSignal_A_InvertedPolarization(timf.hasSignal_A_InvertedPolarization());
@@ -66,6 +66,7 @@ public class DataForGenerator {
             FrequencyModeFragment fmf = SendDataActivity.getFrequencyModeFragment();
             setFreqencyInMhz(fmf.getFrequencyInMHz());
             setFrequencyPeriod(fmf.getPeriod());
+            setFrequencyN(fmf.getFrequencyN());
         }
     }
 
@@ -74,7 +75,6 @@ public class DataForGenerator {
         return "DataForGenerator{" +
                 "selectedMode='" + selectedMode + '\'' +
                 ", isExternalClockSelected=" + isExternalClockSelected +
-                ", timeInterval=" + timeInterval +
                 ", outputWidth=" + outputWidth +
                 ", triggerFrequency=" + triggerFrequency +
                 ", OCT=" + OCT +
@@ -82,8 +82,10 @@ public class DataForGenerator {
                 ", hasSignal_A_InvertedPolarization=" + hasSignal_A_InvertedPolarization +
                 ", hasSignal_B_InvertedPolarization=" + hasSignal_B_InvertedPolarization +
                 ", hasSignal_CW_InvertedPolarization=" + hasSignal_CW_InvertedPolarization +
-                ", freqencyInMhz=" + freqencyInMhz +
                 ", frequencyPeriod=" + frequencyPeriod +
+                ", timeInterval=" + Arrays.toString(timeInterval) +
+                ", freqencyInMhz=" + Arrays.toString(freqencyInMhz) +
+                ", frequencyN=" + Arrays.toString(frequencyN) +
                 '}';
     }
 
@@ -161,11 +163,11 @@ public class DataForGenerator {
         this.hasSignal_CW_InvertedPolarization = hasSignal_CW_InvertedPolarization;
     }
 
-    public double getFreqencyInMhz() {
+    public byte[] getFreqencyInMhz() {
         return freqencyInMhz;
     }
 
-    public void setFreqencyInMhz(double freqencyInMhz) {
+    public void setFreqencyInMhz(byte[] freqencyInMhz) {
         this.freqencyInMhz = freqencyInMhz;
     }
 
@@ -200,5 +202,13 @@ public class DataForGenerator {
 
     public void setTimeInterval(byte[] timeInterval) {
         this.timeInterval = timeInterval;
+    }
+
+    public byte[] getFrequencyN() {
+        return frequencyN;
+    }
+
+    public void setFrequencyN(byte[] frequencyN) {
+        this.frequencyN = frequencyN;
     }
 }
