@@ -1,10 +1,7 @@
 package com.jparzonka.time_interval_app.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.jparzonka.time_interval_app.R;
@@ -26,24 +22,14 @@ public class TimeIntervalModeFragment extends Fragment {
 
     private View view;
     private static double outputWidth = 0;
-    private static FrequencyTriggerSectionFragment frequencyTriggerSectionFragment;
-    private static PeriodTriggerSectionFragment periodTriggerSectionFragment;
     private static CheckBox checkBoxA, checkBoxB, checkBoxCW;
     private byte[] timeInterval;
-    private static boolean isPeriodTriggerSectionSelected;
-    public static boolean isTriggerSelected = false;
+    private byte[] frequencyTrigger;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.ti_mode_layout, container, false);
 
-//        sTIEditText.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                sTIEditText.setText("");
-//                return false;
-//            }
-//        });
         Spinner tiSpinner = (Spinner) view.findViewById(R.id.time_interval_mode_spinner);
         ArrayAdapter<CharSequence> tiAdapter = ArrayAdapter.createFromResource(view.getContext(),
                 R.array.ti_mode_array, android.R.layout.simple_spinner_item);
@@ -53,7 +39,7 @@ public class TimeIntervalModeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("TIMF/TI/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
-                setTimeInterval(getTIValueFromSpinner(parent.getItemAtPosition(position), position));
+                setTimeInterval(getTIValueFromSpinner(position));
             }
 
             @Override
@@ -63,15 +49,32 @@ public class TimeIntervalModeFragment extends Fragment {
         });
 
         Spinner outputWidthSpinner = (Spinner) view.findViewById(R.id.output_width_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
+        ArrayAdapter<CharSequence> owAdapter = ArrayAdapter.createFromResource(view.getContext(),
                 R.array.ow_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        outputWidthSpinner.setAdapter(adapter);
+        owAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        outputWidthSpinner.setAdapter(owAdapter);
         outputWidthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("TIMF/OW/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
-                setOutputWidth(getOWValueFromSpinner(parent.getItemAtPosition(position), position));
+                setOutputWidth(getOWValueFromSpinner(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        Spinner frequencySpinner = (Spinner) view.findViewById(R.id.trigger_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.frequency_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        frequencySpinner.setAdapter(adapter);
+        frequencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("TIMF/OW/onItemSelected", String.valueOf(parent.getItemAtPosition(position)));
+                setFrequencyTrigger(getFrequencyValueFromSpinner(position));
             }
 
             @Override
@@ -80,29 +83,6 @@ public class TimeIntervalModeFragment extends Fragment {
             }
         });
 
-        RadioGroup triggerRadioGroup = (RadioGroup) view.findViewById(R.id.trigger_radio_group);
-        triggerRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // find which radio button is selected
-                if (checkedId == R.id.period_trigger_section_radio_button) {
-                    isTriggerSelected = true;
-                    setPeriodTriggerSectionSelected(true);
-                    periodTriggerSectionFragment = new PeriodTriggerSectionFragment();
-                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    transaction.replace(R.id.trigger_section_frame_layout, periodTriggerSectionFragment).commit();
-                    Log.i("TIMF", "fragment replaced on PeriodTriggerSectionFragment");
-                } else if (checkedId == R.id.frequency_trigger_section_radio_button) {
-                    setPeriodTriggerSectionSelected(false);
-                    isTriggerSelected = true;
-                    frequencyTriggerSectionFragment = new FrequencyTriggerSectionFragment();
-                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    transaction.replace(R.id.trigger_section_frame_layout, frequencyTriggerSectionFragment).commit();
-                    Log.i("TIMF", "fragment replaced on FrequencyTriggerSectionFragment");
-                }
-            }
-        });
 
         checkBoxA = (CheckBox) view.findViewById(R.id.signal_A_polarization);
         checkBoxB = (CheckBox) view.findViewById(R.id.signal_B_polarization);
@@ -110,7 +90,7 @@ public class TimeIntervalModeFragment extends Fragment {
         return view;
     }
 
-    private double getOWValueFromSpinner(Object itemAtPosition, int position) {
+    private double getOWValueFromSpinner(int position) {
         double d;
         switch (position) {
             case 0:
@@ -132,7 +112,7 @@ public class TimeIntervalModeFragment extends Fragment {
         return d;
     }
 
-    private byte[] getTIValueFromSpinner(Object itemAtPosition, int position) {
+    private byte[] getTIValueFromSpinner(int position) {
         byte[] array;
         switch (position) {
             case 0:
@@ -166,28 +146,40 @@ public class TimeIntervalModeFragment extends Fragment {
         return array;
     }
 
+    private byte[] getFrequencyValueFromSpinner(int position) {
+        byte[] d;
+        switch (position) {
+            case 0:
+                d = new byte[]{(byte) 0xBE, 0x69, 0x00, 0x00};
+                break;
+            case 1:
+                d = new byte[]{(byte) 0x02, (byte) 0x90, 0x00, 0x00};
+                break;
+            case 2:
+                d = new byte[]{(byte) 0x02, 0x00, 0x00, 0x00};
+                break;
+            default:
+                d = new byte[]{(byte) 0x00, 0x00, 0x00, 0x00};
+
+        }
+        Log.i("FTSF/getFreqValue", String.valueOf(d));
+        return d;
+    }
+
+    public byte[] getFrequencyTrigger() {
+        return frequencyTrigger;
+    }
+
+    public void setFrequencyTrigger(byte[] frequencyTrigger) {
+        this.frequencyTrigger = frequencyTrigger;
+    }
+
     public static double getOutputWidth() {
         return outputWidth;
     }
 
     private void setOutputWidth(double outputWidth) {
         TimeIntervalModeFragment.outputWidth = outputWidth;
-    }
-
-    public void setPeriodTriggerSectionSelected(boolean periodTriggerSectionSelected) {
-        isPeriodTriggerSectionSelected = periodTriggerSectionSelected;
-    }
-
-    public static boolean getPeriodTriggerSectionSelected() {
-        return isPeriodTriggerSectionSelected;
-    }
-
-    public static FrequencyTriggerSectionFragment getFrequencyTriggerSectionFragment() {
-        return frequencyTriggerSectionFragment;
-    }
-
-    public static PeriodTriggerSectionFragment getPeriodTriggerSectionFragment() {
-        return periodTriggerSectionFragment;
     }
 
     public boolean hasSignal_A_InvertedPolarization() {
@@ -201,7 +193,6 @@ public class TimeIntervalModeFragment extends Fragment {
     public boolean hasSignal_CW_InvertedPolarization() {
         return checkBoxCW.isChecked();
     }
-
 
     public byte[] getTimeInterval() {
         return timeInterval;

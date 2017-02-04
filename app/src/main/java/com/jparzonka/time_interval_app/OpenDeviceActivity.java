@@ -125,34 +125,18 @@ public class OpenDeviceActivity extends AppCompatActivity {
     private boolean openDevice(UsbManager usbManager, UsbInterface usbInterface, FT_Device ftDev, int numberOfDevices) {
 
         if (numberOfDevices > 0) {
-//            Toast.makeText(this, "ODA: devCount > 0", Toast.LENGTH_SHORT).show();
-//           ftDev = new FT_Device(this, usbManager, usbDeviceT5300, usbInterface);
-//          //ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
-            //  ftDev = d2xxManager.openByIndex(this, 0);
             ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
-//            Toast.makeText(this, "openDevice/toString: " + d2xxManager.toString(), Toast.LENGTH_LONG).show();
             if (ftDev == null) {
                 Toast.makeText(this, "ODA: ftDev == null", Toast.LENGTH_SHORT).show();
                 result = false;
             } else {
                 setFtDev(ftDev);
-//                // Reset FT Device
-//                ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
-//                // Set Baud Rate
-//                ftDev.setBaudRate(115200);
-//                // Set Data Bit , Stop Bit , Parity Bit
-//                ftDev.setDataCharacteristics(D2xxManager.FT_DATA_BITS_8, D2xxManager.FT_STOP_BITS_1, D2xxManager.FT_PARITY_NONE);
-//                // Set Flow Control
-//                ftDev.setFlowControl(D2xxManager.FT_FLOW_NONE, (byte) 0x0b, (byte) 0x0d);
-
                 ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
                 ftDev.setBaudRate(9600);
                 ftDev.setDataCharacteristics(D2xxManager.FT_DATA_BITS_8,
                         D2xxManager.FT_STOP_BITS_1, D2xxManager.FT_PARITY_NONE);
                 ftDev.setFlowControl(D2xxManager.FT_FLOW_NONE, (byte) 0x00, (byte) 0x00);
                 ftDev.setLatencyTimer((byte) 16);
-                //ftDev = d2xxManager.openByUsbDevice(this, usbDeviceT5300);
-//                Toast.makeText(this, "ODA: ftDev != null", Toast.LENGTH_SHORT).show();
                 result = true;
             }
         } else {

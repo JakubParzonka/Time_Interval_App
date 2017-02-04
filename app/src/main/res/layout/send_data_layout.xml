@@ -85,42 +85,5 @@
         android:padding="10dp"
         android:text="@string/start" />
 
-    <EditText
-        android:id="@+id/address_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/command_edit_text"
-        android:layout_alignParentRight="true"
-        android:text="address" />
 
-    <EditText
-        android:id="@+id/command_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/trigdiv_button"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="15dp"
-        android:text="command" />
-
-    <Button
-        android:id="@+id/trigdiv_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/start_button"
-        android:padding="10dp"
-        android:text="@string/trig_div" />
-
-    <Button
-        android:id="@+id/loremipsum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/trigdiv_button"
-        android:padding="10dp"
-        android:text="Send" />
 </RelativeLayout>

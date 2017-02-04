@@ -47,12 +47,10 @@ public class InfoPanelFragment extends Fragment {
 
     @SuppressLint("ValidFragment")
     public InfoPanelFragment(Context context, D2xxManager d2xxManager) {
-        try {
+        
             setD2xxManager(d2xxManager);
             setDeviceInformationContext(context);
-        } catch (Exception e) {
-            LogHandler.handleLog(view.getContext(), e.getMessage(), 1);
-        }
+       
 
     }
 
@@ -96,7 +94,6 @@ public class InfoPanelFragment extends Fragment {
             getDeviceInformation();
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
-            LogHandler.handleLog(view.getContext(), e.getMessage(), 2);
             e.printStackTrace();
 
         }
@@ -119,7 +116,6 @@ public class InfoPanelFragment extends Fragment {
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 String s = e.getMessage();
-                LogHandler.handleLog(view.getContext(), "120/onResume/InfoPanelFragment" + s, 3);
                 if (s != null) {
                     errorTextView.setText(s);
                 }

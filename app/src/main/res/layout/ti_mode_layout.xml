@@ -54,53 +54,25 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/trigger"
-        android:textColor="#000000"
-        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="10dp">
 
-        <RadioGroup
-            android:id="@+id/trigger_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/period_trigger_section_radio_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/period" />
-
-            <RadioButton
-                android:id="@+id/frequency_trigger_section_radio_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/frequency2" />
-
-        </RadioGroup>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp">
+            android:padding="10dp"
+            android:text="@string/trigger"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
-            <FrameLayout
-                android:id="@+id/trigger_section_frame_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
+        <Spinner
+            android:id="@+id/trigger_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

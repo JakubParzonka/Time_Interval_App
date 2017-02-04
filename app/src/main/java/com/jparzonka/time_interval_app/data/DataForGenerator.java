@@ -6,8 +6,6 @@ import android.util.Log;
 
 import com.jparzonka.time_interval_app.SendDataActivity;
 import com.jparzonka.time_interval_app.fragments.FrequencyModeFragment;
-import com.jparzonka.time_interval_app.fragments.FrequencyTriggerSectionFragment;
-import com.jparzonka.time_interval_app.fragments.PeriodTriggerSectionFragment;
 import com.jparzonka.time_interval_app.fragments.TimeIntervalModeFragment;
 
 import java.util.Arrays;
@@ -24,12 +22,10 @@ public class DataForGenerator {
     private String selectedMode;
     private boolean isExternalClockSelected;
     private double outputWidth;
-    private static boolean isPeriodTriggerSectionSelected;
-    private double triggerFrequency;
     private double OCT, DAC;
     private boolean hasSignal_A_InvertedPolarization, hasSignal_B_InvertedPolarization, hasSignal_CW_InvertedPolarization;
     private int frequencyPeriod;
-    private byte[] timeInterval, freqencyInMhz, frequencyN;
+    private byte[] timeInterval, freqencyInMhz, frequencyN, triggerFrequency;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public DataForGenerator() throws NullPointerException {
@@ -41,22 +37,7 @@ public class DataForGenerator {
             TimeIntervalModeFragment timf = SendDataActivity.getTimeIntervalModeFragment();
             setTimeInterval(timf.getTimeInterval());
             setOutputWidth(TimeIntervalModeFragment.getOutputWidth());
-            setIsPeriodTriggerSectionSelected(TimeIntervalModeFragment.getPeriodTriggerSectionSelected());
-            Log.i("DataForGenerator", "isPeriodTriggerSectionSelected: " + String.valueOf(isPeriodTriggerSectionSelected()));
-            try {
-                if (isPeriodTriggerSectionSelected) {
-                    PeriodTriggerSectionFragment ptsf = TimeIntervalModeFragment.getPeriodTriggerSectionFragment();
-                    double s = ptsf.getperiodTrigger();
-                    Log.i("DataForGenerator/kons", "s: " + String.valueOf(s));
-                    if (s == 0) setFrequencyPeriod(0);
-                    else setFrequencyPeriod((int) (1 / s));
-                } else {
-                    FrequencyTriggerSectionFragment ftsf = TimeIntervalModeFragment.getFrequencyTriggerSectionFragment();
-                    setFrequencyPeriod((int) ftsf.getFrequencyTrigger());
-                }
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+            setTriggerFrequency(timf.getFrequencyTrigger());
             setOCT();
             setDAC();
             setHasSignal_A_InvertedPolarization(timf.hasSignal_A_InvertedPolarization());
@@ -65,7 +46,6 @@ public class DataForGenerator {
         } else if (Objects.equals(SendDataActivity.getSelectedMode(), FREQUENCY)) {
             FrequencyModeFragment fmf = SendDataActivity.getFrequencyModeFragment();
             setFreqencyInMhz(fmf.getFrequencyInMHz());
-            setFrequencyPeriod(fmf.getPeriod());
             setFrequencyN(fmf.getFrequencyN());
         }
     }
@@ -76,7 +56,6 @@ public class DataForGenerator {
                 "selectedMode='" + selectedMode + '\'' +
                 ", isExternalClockSelected=" + isExternalClockSelected +
                 ", outputWidth=" + outputWidth +
-                ", triggerFrequency=" + triggerFrequency +
                 ", OCT=" + OCT +
                 ", DAC=" + DAC +
                 ", hasSignal_A_InvertedPolarization=" + hasSignal_A_InvertedPolarization +
@@ -86,6 +65,7 @@ public class DataForGenerator {
                 ", timeInterval=" + Arrays.toString(timeInterval) +
                 ", freqencyInMhz=" + Arrays.toString(freqencyInMhz) +
                 ", frequencyN=" + Arrays.toString(frequencyN) +
+                ", triggerFrequency=" + Arrays.toString(triggerFrequency) +
                 '}';
     }
 
@@ -103,15 +83,6 @@ public class DataForGenerator {
 
     public void setExternalClockSelected(boolean externalClockSelected) {
         isExternalClockSelected = externalClockSelected;
-    }
-
-
-    public static boolean isPeriodTriggerSectionSelected() {
-        return isPeriodTriggerSectionSelected;
-    }
-
-    public static void setIsPeriodTriggerSectionSelected(boolean isPeriodTriggerSectionSelected) {
-        DataForGenerator.isPeriodTriggerSectionSelected = isPeriodTriggerSectionSelected;
     }
 
 
@@ -179,11 +150,11 @@ public class DataForGenerator {
         this.frequencyPeriod = frequencyPeriod;
     }
 
-    public double getTriggerFrequency() {
+    public byte[] getTriggerFrequency() {
         return triggerFrequency;
     }
 
-    public void setTriggerFrequency(double triggerFrequency) {
+    public void setTriggerFrequency(byte[] triggerFrequency) {
         this.triggerFrequency = triggerFrequency;
     }
 

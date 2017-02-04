@@ -117,37 +117,9 @@ public class CommandsHandler {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public byte[] getSET_TRIG() {
-       /* byte[] address = Convert.hexStringToByteArray(CommandAddresses.SET_TRIG.getAddress());
-        BitSet data = new BitSet();
-        data.set(0, false);
-        data.set(1, true);
-        String s = Integer.toBinaryString(8);
-        ();
-        // TODO przenieść to do oddzielnej metody
-        char[] dataCharArray = s.toCharArray();
-        int dataSize = dataCharArray.length;
-        // System.out.println("getTRIG_DIV_BitSet char size: " + dataSize + "\narray:\n");
-        // pętla zapełniająca danymi
-        for (int i = 0; i < dataSize; i++) {
-            if (dataCharArray[dataSize - i - 1] == '1') {
-                data.set(16 + i, true);
-            } else if (dataCharArray[dataSize - i - 1] == '0') {
-                data.set(16 + i, false);
-            } else {
-                Log.i("CommandsHandler", "Wrong value in char array");
-            }
-        }
-        data.set(16, 32, true);
-        Log.i("CommandsHandler", "SET_TRIG: " + data.toString());
-//        byte[] data = {(byte) 0xBE, 0x69, 0x00, 0x00};
-//        //Convert.hexStringToByteArray("000069BE");
-//        Log.i("CommandsHandler", "getSET_TRIG!");
-//        for (byte b : data) {
-//            System.out.println(b + " ");
-//        }*/
-        Log.i("CommandsHandler", "getSET_TRIG!");
-        byte[] byteArray = new byte[]{0x0D, (byte) 0xB0, 0x69, 0x00, 0x00}; // ArrayUtils.addAll(address, data.toByteArray());
+    public byte[] getSET_TRIG() {        Log.i("CommandsHandler", "getSET_TRIG!");
+        byte[] byteArray = (ArrayUtils.addAll(Convert.hexStringToByteArray(CommandAddresses.SET_TRIG.getAddress()), dataForGenerator.getTriggerFrequency()));
+
         System.out.println("size = " + byteArray.length);
         for (byte b : byteArray) {
             System.out.println(b + " ");
@@ -156,28 +128,6 @@ public class CommandsHandler {
     }
 
     public byte[] getTRIG_DIV() {
-      /*  BitSet data = new BitSet();
-        String s = Integer.toBinaryString(8);
-        // TODO przenieść to do oddzielnej metody
-        char[] dataCharArray = s.toCharArray();
-        int dataSize = dataCharArray.length;
-        //  System.out.println("getTRIG_DIV_BitSet char size: " + dataSize + "\narray:\n");
-        for (char c : dataCharArray) {
-            System.out.println(c + " ");
-        }
-        int lackOfSpace = 4 - dataSize;
-        //pierwsza pętla zapełniająca danymi
-        for (int i = 0; i < dataSize; i++) {
-            if (dataCharArray[dataSize - i - 1] == '1') {
-                data.set(16 + i, true);
-            } else if (dataCharArray[dataSize - i - 1] == '0') {
-                data.set(16 + i, false);
-            } else {
-                Log.i("CommandsHandler", "Wrong value in char array");
-            }
-        }
-        data.set(20, 40, false);
-        Log.i("CommandsHandler", "TRIG_DIV: " + data.toString());*/
         Log.i("CommandsHandler", "getTRIG_DIV!");
         byte[] address = Convert.hexStringToByteArray(CommandAddresses.TIRG_DIV.getAddress());
         System.out.println("Address: " + address[0] + "   ####    Size: " + address.length);
@@ -190,13 +140,7 @@ public class CommandsHandler {
         } else if (dataForGenerator.getSelectedMode().equals(DataForGenerator.FREQUENCY)) {
             data = new byte[]{0x00, 0x00, 0x00, 0x00};
         }
-
         byte[] byteArray = Convert.addByteArray(address, data);
-
-
-        //Convert.hexStringToByteArray("01000000");
-        System.out.println("size = " + byteArray.length);
-
         for (byte b : byteArray) {
             System.out.println(b + " ");
         }
@@ -303,7 +247,6 @@ public class CommandsHandler {
         double DAC = Double.parseDouble(df2.format(dataForGenerator.getDAC()));
         i = (int) DAC;
         s = Convert.convert(DAC);
-        //s = Long.toBinaryString(Long.valueOf(String.valueOf(i)));
         DAC = Double.valueOf(df2.format(DAC));
         Log.i("CommandsHandler", "double DAC = " + DAC);
         Log.i("CommandsHandler", "int DAC = " + i);
